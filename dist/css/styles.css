@@ -5747,7 +5747,7 @@ button.close {
   z-index: 99999; }
 
 .content-wrapper {
-  padding: 16px; }
+  padding: 15px 15px 0; }
 
 @keyframes pulse {
   0% {
@@ -5807,6 +5807,19 @@ button.close {
   .nav-pills li.active span {
     background-color: #00B4ED; }
 
+#tabMenu {
+  padding: 15px;
+  background-color: #ffffff;
+  z-index: 99; }
+
+#tabMenu.active {
+  position: fixed;
+  top: 0;
+  width: 100%; }
+
+.tab-content.on {
+  margin-top: 70px; }
+
 .media:first-child {
   margin-top: 15px; }
 
@@ -5816,7 +5829,7 @@ button.close {
   .media a {
     padding: 10px 0 8px;
     display: block; }
-  .media .media-body h4 {
+  .media .media-body h4, .media .media-body h3 {
     margin: 8px 0; }
   .media .media-body p {
     margin: 0 0 5px; }
@@ -5875,5 +5888,5 @@ footer {
 
 @media screen and (max-width: 768px) {
   .media {
-    width: 100%; } }
+    width: 47.5%; } }
 /*# sourceMappingURL=styles.css.map */
