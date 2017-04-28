@@ -13,7 +13,7 @@
 }
 
 .content-wrapper {
-  padding: 16px;
+  padding: 15px 15px 0;
 }
 
 @keyframes pulse {
@@ -101,6 +101,22 @@
 
 }
 
+#tabMenu {
+  padding: 15px;
+  background-color: #ffffff;
+  z-index: 99;
+}
+
+#tabMenu.active {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.tab-content.on{
+  margin-top: 70px;
+}
+
 .media:first-child{
   margin-top: 15px;
 }
@@ -113,7 +129,7 @@
     display: block;
   }
   .media-body{
-    h4 {
+    h4, h3 {
       margin: 8px 0;
     }
     p {
@@ -180,6 +196,6 @@ footer {
 
 @media screen and (max-width: 768px) {
   .media {
-    width: 100%;
+    width: 47.5%;
   }
 }
