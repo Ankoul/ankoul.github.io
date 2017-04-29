@@ -2,10 +2,27 @@ console.log('main');
 
 $(document).ready(function(){
 
-	//splash screen fades after 2s
-  setTimeout(function(){
-    $("#splash-screen").fadeOut("slow");
-  }, 2000);
+  readJsonFile("config/config.json", function (config) {
+      //splash screen fades
+      setTimeout(function(){
+          $("#splash-screen").fadeOut("slow");
+      }, config.splashScreen.tempo);
+
+      $('#facebookLink').on('click', function (event) {
+          event.preventDefault();
+
+          document.location = config.facebookUri;
+
+          setTimeout(function(){
+              if (!document.hidden) {
+                  document.location = config.facebookUrl;
+                  // window.open(config.facebookUrl, "_blank");
+              }
+          }, 1000);
+
+      });
+  });
+
 
   //NAV-BAR TAB SLIDE FUNCTIONS
   //number li items
