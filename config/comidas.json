@@ -1,0 +1,26 @@
+[
+  {
+    "nome": "Filet au Poivre",
+    "imagem": "http://www.chezaltamiro.com.br/img/menu/menu4.jpg",
+    "ingredientes": "Filet mignon grelhado, molho de pimenta verde, batatas sautee",
+    "valor": "R$89"
+  },
+  {
+    "nome": "Huîtres À La Chef",
+    "imagem": "http://www.chezaltamiro.com.br/img/menu/menu1.jpg",
+    "ingredientes": "Ostras, molho de vinho branco, laranja, limão Siciliano, torradas e ervas de Provence.",
+    "valor": "R$68"
+  },
+  {
+    "nome": "Saumon Dijon",
+    "imagem": "http://www.chezaltamiro.com.br/img/menu/menu2.jpg",
+    "ingredientes": "Salmão grelhado, molho de mel e mostarde,batatas sautee e brocolis",
+    "valor": "R$78"
+  },
+  {
+    "nome": "Caille Rotie a la Chez Altamiro",
+    "imagem": "http://www.chezaltamiro.com.br/img/menu/menu3.jpg",
+    "ingredientes": "Codornas recheadascom foie gras, arroz selvagem, cogumelos, molho de vinho do Porto, aspargos",
+    "valor": "R$100"
+  }
+]

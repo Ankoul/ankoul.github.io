@@ -1,0 +1,37 @@
+[
+  {
+    "nome": "Água",
+    "imagem": "http://arquivos.sindicatodaindustria.com.br/app/cni_sindicatos/2011/01/10/123/20170412133723713031o.jpg",
+    "valor": "R$3"
+  },
+  {
+    "nome": "Heineken",
+    "imagem": "http://etilicos.com/wp-content/uploads/2015/02/w_heineken1.jpg",
+    "valor": "R$7,90"
+  },
+  {
+    "nome": "Bohemia",
+    "imagem": "http://4.bp.blogspot.com/-HJ5n1jaRdx8/VNoRk_q509I/AAAAAAAAEO0/VfX0rnnbg7w/s1600/bohemia_oaken.jpg",
+    "valor": "R$4,90"
+  },
+  {
+    "nome": "Brahma extra",
+    "imagem": "http://etilicos.com/wp-content/uploads/2015/10/01-2.jpg",
+    "valor": "R$3,90"
+  },
+  {
+    "nome": "Stella Artois",
+    "imagem": "http://www.aba.com.br/wp-content/uploads/2016-07-20/578f8e74a317e.jpg",
+    "valor": "R$3,15"
+  },
+  {
+    "nome": "Absolut Vodka",
+    "imagem": "http://absolutwodka.pl/wp-content/uploads/2015/08/absolut-vodka-product-section.jpg",
+    "valor": "R$15"
+  },
+  {
+    "nome": "Jack Daniels",
+    "imagem": "http://ondda.com/content/uploads/2016/07/jackdaniels.jpg",
+    "valor": "R$25"
+  }
+]
