@@ -14,6 +14,10 @@
 
 .content-wrapper {
   padding: 15px 15px 0;
+
+  .title, .lead{
+    text-align: center;
+  }
 }
 
 @keyframes pulse {
@@ -117,18 +121,18 @@
   margin-top: 70px;
 }
 
-.media:first-child{
-  margin-top: 15px;
-}
-
 .media {
-  width: 200px;
+  width: 22.5%;
   max-width: 100%;
+  margin: 15px 1.25%;
   a {
     padding: 10px 0 8px;
     display: block;
   }
   .media-body{
+    h4 {
+      line-height: 1.2;
+    }
     h4, h3 {
       margin: 8px 0;
     }
@@ -138,6 +142,10 @@
   }
 }
 
+.media:first-child{
+  margin-top: 15px;
+}
+
 .social-media {
   margin-top: 32px;
   padding: 24px 15px;
@@ -145,10 +153,14 @@
   border-bottom: 1px solid #dddddd;
 
   .social-link {
-    background: blue;
-    border-radius: 50%;
+    background: transparent;
     margin: 10px 5px;
     max-width: 64px;
+    max-height: 64px;
+
+    img {
+      border-radius: 50%;
+    }
   }
 
   .social-link:before {
@@ -197,5 +209,11 @@ footer {
 @media screen and (max-width: 768px) {
   .media {
     width: 47.5%;
+  }
+  
+  .content-wrapper {
+    .lead{
+      text-align: left;
+    }
   }
 }
