@@ -13,12 +13,12 @@ $(document).ready(function(){
 
           document.location = config.facebookUri;
 
-          setTimeout(function(){
-              if (!document.hidden) {
-                  document.location = config.facebookUrl;
-                  // window.open(config.facebookUrl, "_blank");
-              }
-          }, 1000);
+          // setTimeout(function(){
+          //     if (!document.hidden) {
+          //         document.location = config.facebookUrl;
+          //         // window.open(config.facebookUrl, "_blank");
+          //     }
+          // }, 1000);
 
       });
   });
