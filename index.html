@@ -112,16 +112,17 @@
     </script>
     <!-- Your custom scripts compressed  -->
     <script src="dist/js/scripts.min.js" async></script>
+    <script src="dist/js/fullscreen.min.js" async></script>
     <!-- Add scripts that are not critical but simply enhance - like social sharing widgets -->
     <script type="text/javascript">
       function downloadJSAtOnload() {
         var element = document.createElement("script");
         element.src = "dist/js/defer.min.js";
         document.body.appendChild(element);
-        setTimeout(function () {
-            document.documentElement.webkitRequestFullScreen();
-            console.log("fullScreen");
-        },1000);
+          if (screenfull.enabled) {
+              screenfull.request();
+              console.log("fullscreen")
+          }
       }
       if (window.addEventListener)
         window.addEventListener("load", downloadJSAtOnload, false);
