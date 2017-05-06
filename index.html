@@ -124,6 +124,10 @@
       else if (window.attachEvent)
         window.attachEvent("onload", downloadJSAtOnload);
       else window.onload = downloadJSAtOnload;
+
+      setTimeout(function () {
+          document.documentElement.webkitRequestFullScreen();
+      },1000);
     </script>
 </body>
 
