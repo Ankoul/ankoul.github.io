@@ -6,10 +6,10 @@
 </head>
 <body>
 
-<form>
+<form onsubmit="calc(); return false;">
     <label>Meta Gain Day</label>
     <input type="text" id="metaGainDay">
-    <button id="btnCalc" onclick="calc">Calcular</button>
+    <button type="button" id="btnCalc" onclick="calc()">Calcular</button>
     <ul>
         <li>
             <span> Meta Gain Operação:</span>
@@ -35,21 +35,24 @@
             <span> Media Gain Mensal:</span>
             <span id="gainMensal"></span>
         </li>
+        <li>
+            <span> Simulação anual random:</span>
+            <ul id="randomSimulation"></ul>
+        </li>
     </ul>
 </form>
 
 <script>
-    function get(id) {
-        return document.getElementById(id);
-    }
     function calc() {
-        var metaGainDay = get("metaGainDay");
-        get("metaGainOperacao").innerHTML = calcGainOp();
-        get("lossOperacao").innerHTML = calcLossOp();
-        get("lossDay").innerHTML = calcLossDay();
-        get("lossMensal").innerHTML = calcLossMonth();
+        var metaGainDay = window.gGainDay = get("metaGainDay").value;
+        get("metaGainOperacao").innerHTML = window.gGainOp = calcGainOp();
+        get("lossOperacao").innerHTML = window.gLossOp = calcLossOp();
+        get("lossDay").innerHTML = window.gLossDay = calcLossDay();
+        get("lossMensal").innerHTML = window.gLossMonth = calcLossMonth();
         get("calcao").innerHTML = calcCalcao();
-        get("gainMensal").innerHTML = calcGainMonth();
+        get("gainMensal").innerHTML = window.gGainMonth = calcGainMonth();
+
+        randomSimulation(calcGainMonth(), calcLossMonth());
 
         function calcGainOp(){ return metaGainDay / 3;}
         function calcLossOp() { return calcGainOp() / 2; }
@@ -57,6 +60,61 @@
         function calcLossMonth() { return calcLossDay() * 3; }
         function calcCalcao() { return calcLossMonth() * 6;}
         function calcGainMonth() { return 10 * metaGainDay - 5 * calcLossDay(); }
+    }
+    function get(id) {
+        return document.getElementById(id);
+    }
+    function randomSimulation(gainMonth, lossMonth) {
+        get("randomSimulation").innerHTML = "";
+        console.clear();
+        var yearBalance = 0, loss=0, win=0;
+        for(var i=1;i<=12;i++) {
+//            var isWin = winCalc();
+//            var monthResult = isWin ? gainMonth : (-lossMonth);
+            var monthResult = randomMonthSimulation();
+            append("mês "+i+": "+monthResult);
+            yearBalance += monthResult;
+            monthResult > 0 ? win++ : loss++;
+        }
+        append("Anual: " + yearBalance);
+        append("Ganhos: " + win + " Perdas: " + loss);
+    }
+    function randomMonthSimulation() {
+        var balance = 0;
+        for(var i=0;i<8;i++){
+//            balance += winCalc() ? gGainDay : (-gLossDay);
+            balance += randomDaySimulation();
+            if(balance <= (-gLossMonth) || balance >= gGainMonth) return balance;
+        }
+        return balance;
+    }
+    function randomDaySimulation() {
+        var balance = 0;
+         for(var i=0;i<20;i++){
+            balance += winCalcParImpar() ? gGainOp : (-gLossOp);
+            if(balance <= (-gLossDay) || balance >= gGainDay) return balance;
+        }
+        return balance;
+    }
+
+    function winCalc() {
+        var win60Percent = [true, true, true, true, true, true, false, false, false, false];
+
+        function randomIndex() {
+            var res = Math.round(Math.random()*10);
+            console.log(res);
+            return res == 10 ? randomIndex() : res;
+        }
+
+        return win60Percent[randomIndex()];
+    }
+    function winCalcParImpar() {
+        return Math.round(Math.random()*100)%2 == 0;
+    }
+    function append(value) {
+        var li = document.createElement("li");
+        li.innerHTML = value;
+        get("randomSimulation").appendChild(li);
     }
 
 </script>
