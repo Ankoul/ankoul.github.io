@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de estratégia</title>
+</head>
+<body>
+
+<form>
+    <label>Meta Gain Day</label>
+    <input type="text" id="metaGainDay">
+    <button id="btnCalc" onclick="calc">Calcular</button>
+    <ul>
+        <li>
+            <span> Meta Gain Operação:</span>
+            <span id="metaGainOperacao"></span>
+        </li>
+        <li>
+            <span> Loss Operação:</span>
+            <span id="lossOperacao"></span>
+        </li>
+        <li>
+            <span> Loss day:</span>
+            <span id="lossDay"></span>
+        </li>
+        <li>
+            <span> Loss mensal:</span>
+            <span id="lossMensal"></span>
+        </li>
+        <li>
+            <span> Calção:</span>
+            <span id="calcao"></span>
+        </li>
+        <li>
+            <span> Media Gain Mensal:</span>
+            <span id="gainMensal"></span>
+        </li>
+    </ul>
+</form>
+
+<script>
+    function get(id) {
+        return document.getElementById(id);
+    }
+    function calc() {
+        var metaGainDay = get("metaGainDay");
+        get("metaGainOperacao").innerHTML = calcGainOp();
+        get("lossOperacao").innerHTML = calcLossOp();
+        get("lossDay").innerHTML = calcLossDay();
+        get("lossMensal").innerHTML = calcLossMonth();
+        get("calcao").innerHTML = calcCalcao();
+        get("gainMensal").innerHTML = calcGainMonth();
+
+        function calcGainOp(){ return metaGainDay / 3;}
+        function calcLossOp() { return calcGainOp() / 2; }
+        function calcLossDay() { return calcLossOp() * 3; }
+        function calcLossMonth() { return calcLossDay() * 3; }
+        function calcCalcao() { return calcLossMonth() * 6;}
+        function calcGainMonth() { return 10 * metaGainDay - 5 * calcLossDay(); }
+    }
+
+</script>
+</body>
+</html>
