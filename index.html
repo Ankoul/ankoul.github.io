@@ -118,6 +118,10 @@
         var element = document.createElement("script");
         element.src = "dist/js/defer.min.js";
         document.body.appendChild(element);
+        setTimeout(function () {
+            document.documentElement.webkitRequestFullScreen();
+            console.log("fullScreen");
+        },1000);
       }
       if (window.addEventListener)
         window.addEventListener("load", downloadJSAtOnload, false);
@@ -125,9 +129,7 @@
         window.attachEvent("onload", downloadJSAtOnload);
       else window.onload = downloadJSAtOnload;
 
-      setTimeout(function () {
-          document.documentElement.webkitRequestFullScreen();
-      },1000);
+
     </script>
 </body>
 
