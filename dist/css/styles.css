@@ -5747,15 +5747,17 @@ button.close {
   z-index: 99999; }
 
 .modal-dialog {
-  margin-top: calc(50vh - 150px); }
+  margin-top: calc(50vh - 100vw / 4); }
 
 .modal-image {
   overflow: hidden;
   position: absolute;
   top: 0;
   left: 0;
-  width: 600px;
-  height: 300px; }
+  width: 100%;
+  max-width: 600px;
+  height: calc(100vw / 2);
+  max-height: 300px; }
   .modal-image img {
     width: 100%;
     height: auto;
@@ -5766,7 +5768,7 @@ button.close {
 
 .modal-header {
   position: absolute;
-  width: 600px;
+  width: 100%;
   top: 0;
   left: 0;
   border: 0; }

@@ -13,7 +13,7 @@
 }
 
 .modal-dialog {
-  margin-top: calc(50vh - 150px);
+  margin-top: calc(50vh - 100vw / 4);
 }
 
 .modal-image {
@@ -39,7 +39,7 @@
 
 .modal-header {
   position: absolute;
-  width: 600px;
+  width: 100%;
   top: 0;
   left: 0;
   border: 0;
