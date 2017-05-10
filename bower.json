@@ -1,12 +1,13 @@
 {
-  "name": "sparky-bootstrap-3-starter",
-  "description": "A simplified starter project for Bootstrap 3 websites using sass and grunt",
+  "name": "Conectare MVP",
+  "description": "Online menu for restaurants, bars and places to eat and drink",
   "main": "",
   "authors": [
-    "Jacob Lett <jacoblett@bootstrapcreative.com>"
+    "Raoni Caselli <https://behance.net/raonicaselli>"
+    "Gilson Souza"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/JacobLett/Flint-Bootstrap-4-Starter-Template",
+  "homepage": "https://github.com/raonicaselli",
   "private": true,
   "ignore": [
     "**/.*",
