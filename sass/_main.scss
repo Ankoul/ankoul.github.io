@@ -12,11 +12,57 @@
   z-index: 99999;
 }
 
+.modal-dialog {
+  margin-top: calc(50vh - 100vw / 4);
+}
+
+.modal-image {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 600px;
+  height: calc(100vw / 2);
+  max-height: 300px;
+
+  & img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+.modal-content {
+  box-shadow: none;
+}
+
+.modal-header {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  border: 0;
+}
+
 .content-wrapper {
   padding: 15px 15px 0;
 
+  .banner-top {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    margin-bottom: 32px;
+    object-fit: cover;
+  }
+
   .title, .lead{
     text-align: center;
+  }
+
+  .title {
+    color: $brand-primary;
+    margin-bottom: 20px;
   }
 }
 
@@ -35,7 +81,7 @@
 }
 
 .logo {
-  animation: pulse 1s linear infinite;
+  animation: pulse 1.5s linear infinite;
 }
 
 @keyframes slideInRight {
@@ -119,6 +165,10 @@
 
 .tab-content.on{
   margin-top: 70px;
+}
+
+.media-container {
+  margin: 0 -1.25%;
 }
 
 .media {

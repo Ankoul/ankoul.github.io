@@ -74,6 +74,7 @@ $(document).ready(function(){
       //splash screen fades
       setTimeout(function(){
           $("#splash-screen").fadeOut("slow");
+          $('#ad-modal').modal('show');
       }, config.splashScreen.tempo);
 
       $('#facebookLink').on('click', function (event) {
