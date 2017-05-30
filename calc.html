@@ -64,7 +64,7 @@
 		var pontos = get("pontos").value;
 		var preco = get("preco").value;
 		get("takeProfit").innerHTML = parseFloat(preco) + parseFloat(pontos);
-		get("stopLoss").innerHTML = parseFloat(preco) + parseFloat(pontos) / 2;
+		get("stopLoss").innerHTML = parseFloat(preco) - parseFloat(pontos) / 2;
 		
 	}
     function calc() {
