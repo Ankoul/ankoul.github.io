@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stop Calculator</title>
+    <script type="text/javascript" src="http://code.interactjs.io/v1.2.6/interact.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <style>
+        form {
+            width: 150px;
+            height: 200px;
+            position: absolute;
+            top: 10px;
+            right: 110px;
+            background-color: white;
+            border: 1px grey solid;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        input {
+            width: 146px;
+            -webkit-appearance:none;
+        }
+        ul {
+            padding-left: 0;
+            cursor: copy;
+        }
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" onclick="newCalculator()">ADD</button>
+
+    <script>
+        (function () {
+            interact('.drag')
+                .draggable({
+                    inertia: true,
+                    onmove: window.dragMoveListener
+                });
+            console.log("interact executado");
+        })();
+        function newCalculator() {
+            var element = '<form class="drag" id="formulario"> <span id="name">Dolar</span> <br> <label>pontos <input type="number" id="pontos" onkeyup="storePontos()"> </label> <label>preço <input type="number" id="preco"> </label> <button type="button" onclick="buy()">COMPRA</button> <button type="button" onclick="sell()">VENDA</button> <ul> <li> <span> Gain:</span> <span id="takeProfit"></span> </li> <li> <span> Loss:</span> <span id="stopLoss"></span> </li> </ul> </form>';
+//            document.createElement(element);
+            $(document.body).append(element);
+        }
+
+        function dragMoveListener (event) {
+            var target = event.target,
+                // keep the dragged position in the data-x/data-y attributes
+                x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+            // translate the element
+            target.style.webkitTransform =
+                target.style.transform =
+                    'translate(' + x + 'px, ' + y + 'px)';
+
+            // update the posiion attributes
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+        }
+
+        // this is used later in the resizing and gesture demos
+        window.dragMoveListener = dragMoveListener;
+//        get("pontos").value = localStorage.getItem("pontos");
+        function storePontos(){
+//            localStorage.setItem("pontos",get("pontos").value);
+        }
+        function buy(){
+            var pontos = get("pontos").value;
+            var preco = get("preco").value;
+            get("takeProfit").innerHTML = parseFloat(preco) + parseFloat(pontos);
+            get("stopLoss").innerHTML = parseFloat(preco) - parseFloat(pontos) / 2;
+            get("formulario").style.background = "blue";
+        }
+        function sell(){
+            var pontos = get("pontos").value;
+            var preco = get("preco").value;
+            get("takeProfit").innerHTML = parseFloat(preco) - parseFloat(pontos);
+            get("stopLoss").innerHTML = parseFloat(preco) + parseFloat(pontos) / 2;
+            get("formulario").style.background = "red";
+        }
+        function get(id) {
+            return document.getElementById(id);
+        }
+    </script>
+</body>
+</html>
