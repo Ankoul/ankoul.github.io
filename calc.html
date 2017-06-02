@@ -62,9 +62,7 @@
 </form>
 
 <script>
-	document.onload = function(){
-		get("pontos").value = localStorage.getItem("pontos");
-	};
+	get("pontos").value = localStorage.getItem("pontos");
 	function storePontos(){
 		localStorage.setItem("pontos",get("pontos").value);
 	}
