@@ -10,7 +10,9 @@
 	<label>pontos</label>
     <input type="number" id="pontos">
 	<label>preço</label>
-    <input type="number" id="preco" onkeyup="calcStops()">
+    <input type="number" id="preco">
+	<button onclick="buy()">COMPRAR</button>
+	<button onclick="sell()">VENDER</button>
 	<ul>
         <li>
             <span> Gain:</span>
@@ -60,12 +62,17 @@
 </form>
 
 <script>
-	function calcStops(){
+	function buy(){
 		var pontos = get("pontos").value;
 		var preco = get("preco").value;
 		get("takeProfit").innerHTML = parseFloat(preco) + parseFloat(pontos);
 		get("stopLoss").innerHTML = parseFloat(preco) - parseFloat(pontos) / 2;
-		
+	}
+	function sell(){
+		var pontos = get("pontos").value;
+		var preco = get("preco").value;
+		get("takeProfit").innerHTML = parseFloat(preco) - parseFloat(pontos);
+		get("stopLoss").innerHTML = parseFloat(preco) + parseFloat(pontos) / 2;
 	}
     function calc() {
         var metaGainDay = window.gGainDay = get("metaGainDay").value;
