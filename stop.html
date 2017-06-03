@@ -26,11 +26,15 @@
         li {
             list-style: none;
         }
+		#scale-element.reset {
+		  transition: -webkit-transform 0.3s ease-in-out;
+		  transition: transform 0.3s ease-in-out;
+		}
     </style>
 </head>
 <body>
     <button type="button" onclick="newCalculator()">ADD</button>
-
+	<div id="scale-element" class="reset" style="width: 200px;height: 200px; background-color: green"></div>
     <script>
         
 		/*! jQuery v3.2.1 | (c) JS Foundation and other contributors | jquery.org/license */
@@ -215,6 +219,38 @@ X=F[b[c]+"CancelAnimationFrame"]||F[b[c]+"CancelRequestAnimationFrame"];T||(T=fu
         }
         function get(id) {
             return document.getElementById(id);
+        }
+		var scale = 1,
+            scaleElement = document.getElementById('scale-element'),
+            resetTimeout;
+
+        interact(scaleElement)
+            .gesturable({
+                onstart: function (event) {
+                    clearTimeout(resetTimeout);
+                    scaleElement.classList.remove('reset');
+                },
+                onmove: function (event) {
+                    scale = scale * (1 + event.ds);
+
+                    scaleElement.style.webkitTransform =
+                        scaleElement.style.transform =
+                            'scale(' + scale + ')';
+
+                    dragMoveListener(event);
+                },
+                onend: function (event) {
+                    resetTimeout = setTimeout(reset, 1000);
+                    scaleElement.classList.add('reset');
+                }
+            });
+//            .draggable({ onmove: dragMoveListener });
+
+        function reset () {
+            scale = 1;
+            scaleElement.style.webkitTransform =
+                scaleElement.style.transform =
+                    'scale(1)';
         }
     </script>
 	
