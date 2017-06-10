@@ -1,0 +1,1131 @@
+@font-face {
+    font-family: 'texgyrescholaregular';
+    src: url('../fonts/texgyreschola-regular-webfont.eot');
+    src: url('../fonts/texgyreschola-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/texgyreschola-regular-webfont.woff') format('woff'),
+         url('../fonts/texgyreschola-regular-webfont.ttf') format('truetype'),
+         url('../fonts/texgyreschola-regular-webfont.svg#texgyrescholaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'texgyrescholabold';
+    src: url('../fonts/texgyreschola-bold-webfont.eot');
+    src: url('../fonts/texgyreschola-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/texgyreschola-bold-webfont.woff') format('woff'),
+         url('../fonts/texgyreschola-bold-webfont.ttf') format('truetype'),
+         url('../fonts/texgyreschola-bold-webfont.svg#texgyrescholabold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+	background: #FFF top repeat-y;
+	background-size: 100%;
+	width: 100%;
+	height: 100%;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+	font-family: 'texgyrescholaregular', serif;
+	font-weight: normal;
+	font-size: 2em;
+	color: #333;
+	margin: 0.8em 0 0;
+}
+h2 {
+	font-family: 'texgyrescholaregular', serif;
+	font-weight: normal;
+	font-size: 2em;
+	color: #333;
+	margin: 0.8em 0 0;
+}
+h3 {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1.6em;
+	color: #333;
+	margin: 0;
+}
+h4 {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 0.8em;
+	color: #333;
+	margin: 0;
+}
+p{
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1em;
+	color: #333;
+	margin: 0;
+	padding: 0;
+}
+a{
+	display: block;
+	text-decoration: none;
+}
+.cardapio span{
+	font-size: 1.2em;
+}
+.contact-map{
+	height: 500px;
+	max-width: 100% !important;
+	padding: 40px 0 0 !important;
+}
+#map_canvas { 
+	height: 100%;
+	width: 100%;
+}
+.overlay {
+   background:transparent; 
+   position:relative; 
+   width:100%;
+   height:500px; /* your iframe height */
+   top:500px;  /* your iframe height */
+   margin-top:-500px;  /* your iframe height */
+}
+.fundo-inicio{
+	position: fixed;
+	top: 0;
+	background: url('../img/background-landscape.jpg') no-repeat top;
+	background-size: 100%;
+	width: 100%;
+	height: 100%;
+}
+#pg-inicio{
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	color: #FFF !important;
+}
+#pg-inicio header h3, #pg-inicio header a, #pg-inicio a:visited,#pg-inicio a:hover,#pg-inicio .delivery-info p, #pg-inicio .delivery-info h3, #pg-inicio .info-pizza h3 a, #pg-inicio .info-pizza h3 a:visited, #pg-inicio .info-pizza h3 a:focus, #pg-inicio .info-pizza h3 a:active, #pg-inicio .inicio-info p, #pg-inicio .inicio-info h1, #pg-inicio .inicio-info h2, #pg-inicio .inicio-info a{
+	color: #FFF;
+}
+#pg-inicio .menu a:hover{
+	border-bottom: #FFF solid 3px;
+}
+#pg-comum .banner-transparente{
+	background: #FFF;
+	opacity: 1;
+}
+.menu a:hover{
+	border-bottom: #333 solid 3px;
+}
+.right{
+	float: right !important;
+}
+.left{
+	float:left !important;
+}
+.spacer{
+	padding-top: 30px;
+	padding-bottom: 10px;
+}
+.inline-block{
+	display: inline-block !important;
+}
+
+/*------------------------------HEADER CSS--------------------------------*/ 
+.banner-transparente{
+	background: #333;
+	opacity: 0.5;
+	z-index: 1;
+	width: 100%;
+	height: 100px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.header{
+	height: 100px;
+	z-index: 5;
+	position: relative;
+}
+.logo{
+	background: url('../img/logo-dark.svg') center no-repeat;
+	background-size: 100%;
+	height: 100px;
+}
+.logo a{
+	width: 100%;
+	height: 100%;
+}
+#burger-menu{
+	background: url('../img/burger-menu-b.svg') center no-repeat;
+	background-size: 50%;
+	position: relative;
+	top: 10px;
+	height: 100px;
+	width: 80%;
+	z-index: 10;
+}
+#pg-inicio #burger-menu{
+	background: url('../img/burger-menu-w.svg') center no-repeat;
+	background-size: 50%;
+}
+.menu{
+	position: relative;
+	top: 50px;
+}
+.menu li{
+	list-style-type: none;
+	display: inline-block;
+	width: inherit;
+	height: 25px;
+	padding: 0 10px;
+}
+.menu a{
+	height: 25px;
+	padding: 0 10px;
+	font-family: 'texgyrescholaregular', serif;
+	font-weight: normal;
+	/* font-size: 100%; */
+	color: #333;
+}
+#pg-inicio #paginaAtual, #pg-inicio .paginaAtual{
+	border-bottom: #FFF solid 3px !important;
+}
+#paginaAtual, .paginaAtual{
+	border-bottom: #333 solid 3px;
+}
+.rs-desktop{
+	padding: 0;
+	margin: 30px 0 0;
+	height: 40px;
+}
+.rs-desktop li{
+	list-style-type: none;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	float: right;
+	margin-left: 20px;
+}
+.rs-desktop a{
+	width: 100%;
+	height: 100%;
+}
+.rs-mobile{
+	list-style-type: none;
+	width: 100%;
+	height: 100px;
+	margin: 0;
+	padding: 0;
+}
+.fb-mobile{
+	background: url('../img/fb-icon-mobile.svg') center no-repeat;
+	background-size: 80%;
+	display: inline-block !important;
+	height: 100%;
+	width: 30%;
+	margin-left:2.5%;
+}
+.gplus-mobile{
+	background: url('../img/gg-icon-mobile.svg') center no-repeat;
+	background-size: 80%;
+	display: inline-block !important;
+	height: 100%;
+	width: 30%;
+}
+.inst-mobile{
+	background: url('../img/ig-icon-mobile.svg') center no-repeat;
+	background-size: 80%;
+	display: inline-block !important;
+	height: 100%;
+	width: 30%;
+}
+.section-black{
+	background: #333;
+}
+.section-black h2{
+	color: #FFF !important;
+	text-align: center;
+}
+.section-blue{
+	background: #007AE7;
+}
+.copa-logo-mb{
+	background: url('../img/copa-logo.svg') center no-repeat;
+	background-size: 50%;
+	height: 150px;
+	width: inherit !important;
+}
+#pg-inicio .fb-desktop{
+	background: url('../img/fb-icon-small.svg') no-repeat;
+	background-size: 100%;
+}
+.fb-desktop{
+	background: url('../img/fb-icon-small-b.svg') no-repeat;
+	background-size: 100%;
+}
+.fb-desktop a:hover{
+	background: url('../img/fb-icon-mobile.svg') no-repeat;
+	background-size: 100%;
+}
+#pg-inicio .gplus-desktop{
+	background: url('../img/gg-icon-small.svg') no-repeat;
+	background-size: 100%;
+}
+.gplus-desktop{
+	background: url('../img/gg-icon-small-b.svg') no-repeat;
+	background-size: 100%;
+}
+.gplus-desktop a:hover{
+	background: url('../img/gg-icon-mobile.svg') no-repeat;
+	background-size: 100%;
+}
+#pg-inicio .inst-desktop{
+	background: url('../img/ig-icon-small.svg') no-repeat;
+	background-size: 100%;
+}
+.inst-desktop{
+	background: url('../img/ig-icon-small-b.svg') no-repeat;
+	background-size: 100%;
+}
+.inst-desktop a:hover{
+	background: url('../img/ig-icon-mobile.svg') no-repeat;
+	background-size: 100%;
+}
+#pesquisa{
+	border-radius: 10px;
+	border: solid 1px #333;
+	height: 25px;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	text-indent: 5px;
+	overflow: hidden;
+}
+#pg-inicio #pesquisa{
+	border: solid 1px #FFF;
+}
+.search-button{
+	background: none;
+	border: none;
+	position: relative;
+	bottom: 25px;
+	float: right;
+}
+
+
+/*----------------------------------------------------------------*/
+
+/* INICIO CONTEÚDO CSS */
+.delivery-info{
+	text-align: right;
+	padding: 10px 20px 0;
+}
+.fone-icon{
+	background: url('../img/tel-icon.svg') no-repeat center;
+	background-size: 100%;
+	height: 24px;
+	width: 24px;
+	position: relative;
+	top: 5px;
+}
+.inicio-info{
+	position: relative;
+	top: 30%;
+	padding-bottom: 30px;
+}
+.btn-transparente{
+	background: none;
+	border: solid 2px #FFF;
+	border-radius: 10px;
+	margin-top: 10px;
+	padding: 0px 20px 0 0 !important;
+}
+.btn-transparente a{
+	width: 100%;
+	height: 100%;
+	padding: 3px 10px;
+	text-align: center;
+	border-radius: 8px;
+	font-size: 1.4em;
+}
+.btn-transparente a:hover{
+	background: #368636;
+}
+.btn-transparente a:visited{
+	clear: both;
+}
+.mais-icon, .mais-icon1, .mais-icon2, .mais-icon3, .mais-icon4{
+	background: url('../img/mais-icon.svg') no-repeat;
+	background-position: center;
+	height: 28px;
+	width: 28px;
+	background-size: 80%;
+	vertical-align: middle;
+	position: relative;
+	bottom: 1px;
+	right: 10px;
+}
+.cardapio-icon{
+	background: url('../img/menu-icon-big.svg') no-repeat center;
+	height: 35px;
+	width: 40px;
+	background-size: 100%;
+	vertical-align: middle;
+	position: relative;
+	display: inline-block;
+	bottom: 1px;
+	right: 10px;
+}
+.mapa-icon{
+	background: url('../img/mapa-icon-big.svg') no-repeat center;
+	height: 35px;
+	width: 40px;
+	background-size: 100%;
+	vertical-align: middle;
+	position: relative;
+	display: inline-block;
+	bottom: 1px;
+	right: 10px;
+}
+.mapa{
+	margin-left: 40px;
+}
+/* PAGINAS RESTANTES CONTEUDO */
+.red-background{
+	background-color: #841517;
+}
+.section-main h1, .section-main p{
+	padding: 0 0 20px 0;
+	text-align: left;
+}
+.red-background h1, .red-background h2, .red-background p, .red-background a, .areia-background a{
+	color: #FFF;
+}
+.section-main .copa-logo-mb{
+	background: url('../img/copa-logo.svg') center no-repeat;
+	background-size: 70%;
+	height: 250px;
+	width: 20% !important;
+}
+.section-main .seta-icon{
+	background: url('../img/arrowdown-icon-w.svg') no-repeat center;
+	height: 40px;
+	padding: 0;
+	background-size: 100%;
+	width: 40px;
+	margin: 120px auto 50px;
+}
+.section-main .img-circle{
+	padding-top: 100px;
+}
+.section-main .img{
+	width:100%;
+	margin-left:20%
+}
+.section-main .img-small{
+	width: 40%;
+	margin-left: 20%;
+}
+.areia-background{
+	background-color: #DEE9BD;
+}
+.areia-background p{
+	font-weight: 400;
+}
+.section-secundario p{
+	padding: 0 0 20px 0;
+	text-align: left;
+}
+.section-secundario{
+	padding: 0 0 60px 0;
+	text-align: center;
+}
+.section-secundario .img{
+	width:80%;
+	margin-left:auto;
+	margin-right:auto;
+	padding-bottom: 20px;
+}
+.img-circle{
+	padding-top: 50px;
+}
+.img-circle-small{
+	padding: 40px 0 100px;
+}
+.seta-icon a{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+#voltar_topo {
+	background: url('../img/topo.svg') no-repeat top;
+	background-size: 100%;
+	width: 70px;
+	height: 100px;
+	position: fixed;
+	right: 5%;
+	bottom: 0px;
+	display: none;
+	z-index: 20;
+}
+#topo{
+	position: absolute;
+	top: 0;
+}
+.side-text p{
+	text-align: right !important;
+	padding-right: 10px;
+	font-size: 1em;
+}
+
+/*CSS PAGINA DE POSTS*/
+.section-post{
+	border-radius: 20px;
+	padding-bottom: 20px;
+	margin-bottom: 80px;
+}
+.section-post h2, .section-post p, .section-post a{
+	color: #333;
+}
+.img-circle-post{
+	padding: 35px 0 10px;
+}
+.img-post{
+	width: 80%;
+	height: 80%;
+	margin-left: 10%;
+	border-radius: 50%;
+}
+.section-post .btn-transparente{
+	border: solid 2px #333;
+}
+.section-post .mais-icon{
+	background-image: url('../img/mais-icon-b.svg');
+}
+#conteudo-post{
+	height: 2.8em;
+	overflow: hidden;
+	padding: 10px 0 !important;
+}
+.load-posts{
+	margin-bottom: 60px;
+}
+
+/*CSS PAGINA DE CONTATO*/
+#commentForm {
+	padding: 0;
+}
+#commentForm label {
+	width: 100%;
+}
+#commentForm p{
+	padding: 10px 0 5px 0;
+}
+form.cmxform label.error, label.error {
+	/* remove the next line when you have trouble in IE6 with labels in list */
+	color: #DEE9BD;
+}
+div.error { 
+	display: none; 
+}
+input, textarea {	
+	border: none;
+	border-radius: 10px;
+	font-size: 1.4em;
+	text-indent: 0.5em;
+	width: 100%;
+	margin-bottom: 5px;
+}
+#ccomment{
+	height: 172px;
+}
+input:focus { border: 1px solid black; }
+input.error { border: 1px solid #DEE9BD; }
+.submit{
+	width: 30%;
+	float: right;
+	color: #FFF
+}
+.submit:hover{
+	background: #368636;
+}
+/*CARDAPIO*/
+.cardapio{
+	display: none;
+	background: #d7dd99;
+	color: #333 !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	z-index: 100;
+}
+.cardapio-img{
+	background: url('../img/cardapio-img.jpg') no-repeat top;
+	background-size: 100%;
+}
+.cardapio span, .cardapio img{
+	vertical-align: middle;
+	padding:5px 10px;
+}
+.cardapio h3{
+	padding: 2px 15px;
+}
+
+/*CSS RODAPÉ*/
+#pg-inicio .footer{
+	background: #FFF;
+	position: absolute;
+	width: 100%;
+	top: 110%;
+	padding-bottom: 30px;
+}
+.footer{
+	padding-bottom: 30px;
+}
+.copyright{
+	margin-top: 100px;
+}
+.casux{
+	text-align: right;
+	margin-top: 30px;
+}
+.casux-icon{
+	background: url('../img/casux-logo.svg') top no-repeat;
+	background-size: 100%;
+	height: 120px;
+	width: 145px;
+}
+.casux-icon a{
+	width: 100%;
+	height: 100%;
+} 
+.video-responsive{
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	display: block;
+	max-width: 1280px;
+	padding: 20px 0;
+}
+.delivery-info > a {
+    margin-top: 1em;
+}
+
+@media screen and (min-width: 1600px) {
+	.inicio-info{
+		top: 40%;
+	}
+}
+
+@media screen and (min-width: 1280px) {
+	h1, h2{
+		font-size: 2.4em;
+	}
+	p {
+		font-size: 1.2em;
+	}
+	.hide-on-desktop {
+    	display: none !important;
+  	}
+  	#pg-inicio{
+  		background-size: 100%;
+  	}
+  	#pg-inicio .footer{
+		top: 130%;
+	}
+}
+
+@media screen and (max-width: 719px) {
+	h1{
+		margin: 0;
+		font-size: 2em;
+	}
+	h2{
+		font-size: 2em;
+	}
+	.inicio-info h2{
+		font-size: 1.6em;
+	}
+	a{
+		font-size: 1.6em;
+	}
+	.fundo-inicio{
+		background: url('../img/background-home-mb.jpg') no-repeat;
+		background-size: 120%;
+	}
+	#paginaAtual, .paginaAtual{
+		border: none;
+		background: #841517;
+		color: rgba(255,255,255,1);
+	}
+	.banner-transparente{
+		height: 130px;
+	}
+	.header{
+		padding: 0 !important;
+		height: 120px;
+	}
+	.logo{
+		position: relative;
+	}
+	.info-pizza{
+		text-align: center;
+		position: relative;
+		bottom: 5px;
+	}
+	.info-pizza span a{
+		font-size: 1.6rem; 
+		display: inline-block;
+		color: #333;
+	}
+	.fb-mobile{
+		background-size: 50%;
+		height: 60px;
+		width: 20%;
+		margin-left:2.5%;
+	}
+	.gplus-mobile{
+		background-size: 50%;
+		height: 60px;
+		width: 20%;
+	}
+	.inst-mobile{
+		background-size: 50%;
+		height: 60px;
+		width: 20%;
+	}
+	#pg-inicio #burger-menu, #burger-menu{
+		background-size: 80%;
+	}
+	.inicio-info{
+		position: static;
+		padding: 10px 0 30px 0;
+		margin-bottom: 20px;
+	}
+	.cardapio-icon, .mapa-icon{
+		display: block;
+		position: static;
+		margin: auto;
+	}
+	.cardapio{
+		width: 100%;
+		left: 0%;
+		top: 0;
+	}
+	.cardapio h3{
+		padding: 2px 0;
+	}
+	.cardapio-img{
+		background: url('../img/cardapio-img-mb.jpg') no-repeat top;
+		background-size: 100%;
+		height: 1600px;
+	}
+	.mapa{
+		margin-left: 0;
+		float: right !important;
+	}
+	.btn-transparente{
+		background: #368636 !important;
+		border: none;
+		box-shadow: 0px 1px 2px #666666;
+	}
+	#pg-inicio .footer{
+		padding-bottom: 30px;
+		margin-top: 60px;
+		text-align: center;
+		color: #333 !important;
+	}
+	.copyright{
+		margin-top: 30px;
+	}
+	.casux{
+		text-align: center;
+		margin-top: 30px;
+	}
+	.casux-icon{
+		background: url('../img/casux-logo.svg') top no-repeat;
+		background-size: 100%;
+		height: 120px;
+		width: 145px;
+		float: none !important;
+		margin: auto;
+	}
+	.casux-icon a{
+		width: 100%;
+		height: 100%;
+	}
+	.hide-info1, .hide-info2, .hide-info3, .hide-info4{
+		display: none;
+	}
+	.section-main h1{
+		padding: 20px 0 0;
+		text-align: left;
+	}
+	.section-main p, .section-secundario p{
+		padding: 5px 0;
+		text-align: left;
+	}
+	.section-secundario{
+		text-align: left;
+	}
+	.section-secundario h2{
+		padding: 20px 10px 0;
+	}
+	.img-circle{
+		padding-top: 20px !important;
+	}
+	.img {
+		margin-left: 0 !important;
+	}
+	.small{
+		margin-left: 10% !important;
+	}
+	.seta-icon{
+		margin: 60px 0 40px !important; 
+	}
+	.section-post{
+		margin-top: 40px;
+	}
+	.section-post a{
+		color: #FFF;
+	}
+	.section-post p{
+		margin-bottom: 5px;
+	}
+	.section-post h2{
+		font-size: 1.8em;
+		line-height: 1.2em;
+		padding-bottom: 0.2em;
+	}
+	.section-post .btn-transparente{
+		border: none;
+	}
+	.section-post .mais-icon{
+		background-image: url('../img/mais-icon.svg');
+	}
+	#conteudo-post{
+		height: 3.4em;
+		overflow: hidden;
+		padding: 15px 0 !important;
+	}
+	#voltar_topo {
+		background: url('../img/topo.svg') no-repeat top;
+		background-size: 100%;
+		width: 50px;
+		height: 70px;
+		position: fixed;
+		right: 5%;
+		bottom: 0px;
+		display: none;
+		z-index: 20;
+	}
+	.submit{
+		width: 100%;
+		height: 2em;
+	}
+	.footer{
+		padding-top: 30px;
+		text-align: center;
+		color: #333 !important;
+	}
+	.video-responsive{
+		padding: 0;
+	}
+}
+
+@media screen and (max-width: 767px) and (orientation: landscape){
+	.fundo-inicio{
+		background: url('../img/background-landscape.jpg') top no-repeat;
+		background-size: 100%;
+	}
+	.header, .banner-transparente{
+		height: 100px;
+	}
+	.logo{
+		background-size: 60%;
+	}
+	#burger-menu{
+		background-size: 50%;
+	}
+	#pg-inicio #burger-menu{
+		background-size: 50%;
+	}
+	.info-pizza{
+		bottom: 30px;
+		float: right;
+		width: 35% !important;
+		position: relative;
+		bottom: 70%;
+	}
+	.info-pizza h3{
+		font-size: 1.2em;
+	}
+	.info-pizza span{
+		display: block;
+	}
+	.fb-mobile, .gplus-mobile, .inst-mobile {
+		background-size: 50%;
+		width: 25%;
+	}
+	.copa-logo-mb{
+		background-size: 30%;
+	}
+	.inicio-info .mobile-grid-100{
+		clear: none;
+	}
+	.section-secundario .img, .section-main .img{
+		width:50%;
+		margin-left:25% !important;
+		padding-bottom: 20px;
+	}
+	#pg-inicio .footer{
+		top: 130%;
+	}
+
+}
+
+@media screen and (max-width: 1279px) and (min-width: 720px) and (orientation: portrait){
+	.hide-on-mobile {
+		display: none !important;
+	}
+	.hide-on-tablet{
+		display: none !important;
+	}
+	.logo{
+		background-size: 60%;
+	}
+	h1{
+		margin: 0;
+		font-size: 3em;
+	}
+	h2{
+		font-size: 3em;
+	}
+	h4{
+		font-size: 1.6em;
+	}
+	p , a{
+		font-size: 2em;
+	}
+	.fundo-inicio{
+	background: url('../img/background-home-mb.jpg') no-repeat;
+	background-size: 120%;
+	}
+	#paginaAtual, .paginaAtual{
+		border: none;
+		background: #841517;
+		color: rgba(255,255,255,1);
+	}
+	.banner-transparente{
+		height: 130px;
+	}
+	.header{
+		padding: 0 !important;
+		height: 120px;
+	}
+	.info-pizza{
+		text-align: center;
+		position: relative;
+		bottom: 5px;
+	}
+	.fb-mobile{
+		background-size: 50%;
+		height: 60px;
+		width: 20%;
+		margin-left:2.5%;
+	}
+	.gplus-mobile{
+		background-size: 50%;
+		height: 60px;
+		width: 20%;
+	}
+	.inst-mobile{
+		background-size: 50%;
+		height: 60px;
+		width: 20%;
+	}
+	.copa-logo-mb{
+		background-size: 50%;
+		height: 250px;
+		width: inherit !important;
+	}
+	.inicio-info{
+		position: static;
+		padding: 10px 0 30px 0;
+		margin-bottom: 20px;
+	}
+	.inicio-info article{
+		margin-bottom: 100px;
+	}
+	.btn-transparente{
+		background: #368636 !important;
+		border: none;
+		font-size: 1.6em;
+		box-shadow: 0px 1px 2px #666666;
+	}
+	.cardapio{
+		width: 100%;
+		left: 0%;
+		top: 0;
+	}
+	.cardapio h3{
+		padding: 2px 0;
+	}
+	.cardapio-img{
+		background: url('../img/cardapio-img-mb.jpg') no-repeat top;
+		background-size: 100%;
+		height: 3600px;
+	}
+	#pg-inicio .footer{
+		top: 100%;
+		padding-bottom: 30px;
+		margin-top: 30px;
+		text-align: center;
+		color: #333 !important;
+	}
+	.copyright{
+		margin-top: 30px;
+	}
+	.casux{
+		text-align: center;
+		margin-top: 30px;
+	}
+	.casux-icon{
+		background: url('../img/casux-logo.svg') top no-repeat;
+		background-size: 100%;
+		height: 120px;
+		width: 145px;
+		float: none !important;
+		margin: auto;
+	}
+	.casux-icon a{
+		width: 100%;
+		height: 100%;
+	} 
+	.hide-info1, .hide-info2, .hide-info3, .hide-info4{
+		display: none;
+	}
+	.section-main h1{
+		padding: 20px 0 0;
+	}
+	.section-main p, .section-secundario p{
+		padding: 5px 0;
+	}
+	.section-secundario{
+		text-align: left;
+	}
+	.section-secundario h2{
+		padding: 20px 10px 0;
+	}
+	.img-circle{
+		padding-top: 20px !important;
+	}
+	.img {
+		margin-left: 10% !important;
+	}
+	.seta-icon{
+		margin: 60px 0 40px !important; 
+	}
+	.section-post{
+		margin-top: 40px;
+	}
+	.section-post a{
+		color: #FFF;
+	}
+	.section-post p{
+		margin-bottom: 15px;
+	}
+	.section-post h2{
+		font-size: 2.8em;
+		line-height: 1.2em;
+		padding-bottom: 0.2em;
+	}
+	.section-post .btn-transparente{
+		border: none;
+	}
+	.section-post .mais-icon{
+		background-image: url('../img/mais-icon.svg');
+	}
+	#conteudo-post{
+		height: 3.6em;
+		overflow: hidden;
+		padding: 15px 0 !important;
+	}
+	.submit{
+		width: 100%;
+		height: 2em;
+	}
+	input, textarea, label.error {
+		font-size: 2em;
+	}
+	.footer{
+		padding-top: 30px;
+		text-align: center;
+		color: #333 !important;
+	}
+}
+	
+@media screen and (max-width: 1279px) and (min-width: 720px) and (orientation: landscape){
+	a{
+		font-size: 70%;
+	}
+	.fundo-inicio{
+		background-size: 120%;
+	}
+	.logo{
+		background-position: center;
+		background-size: 100%;
+		height: 100px;
+	}
+	.hide-on-desktop {
+    display: none !important;
+  	}
+	.rs-desktop li{
+		margin-left: 5%;
+	}
+	.img-pizza{
+		height: 400px;
+	}
+	.fb-ic{
+		height: 100px;
+	}
+	.btn-transparente{
+		background: #368636 !important;
+		border: none;
+		box-shadow: 0px 1px 2px #666666;
+	}
+	.section-post .btn-transparente{
+		border: none;
+	}
+	.section-post .mais-icon{
+		background-image: url('../img/mais-icon.svg');
+	}
+	.section-post a{
+		color: #FFF;
+	}
+}
+
+@media screen and (min-width: 1280px) and (min-resolution: 2dppx) {
+	.wrap{
+		width: 1200px;
+	}
+	.grid-container{
+		max-width: 1280px !important;
+	}
+	.img-pizza{
+		height: 650px;
+	}
+	.banner-green{
+		height: 220px;
+	}
+	.fb-ic{
+		height: 100px;
+	}
+}

@@ -1,0 +1,112 @@
+$(document).ready(function() {
+   
+   //FUNÇÕES PARA EXPANDIR/ESCONDER O TEXTO DAS PÁGINAS
+   var aberto1 = false;
+   var aberto2 = false;
+   var aberto3 = false;
+   var aberto4 = false;
+      $('#expandir1').click(function(event){
+         event.preventDefault();
+         if(aberto1 === false){
+            $('.hide-info1').show('slow','swing');
+            $('#ver-txt1').text('ver menos');
+            $('.mais-icon1').css('background','url("img/menos-icon.svg") no-repeat center');
+            aberto1 = true;
+         } else {
+            $('.hide-info1').hide('slow','swing');
+            $('#ver-txt1').text('ver mais');
+            $('.mais-icon1').css('background','url("img/mais-icon.svg") no-repeat center');
+            aberto1 = false;
+         }
+      });
+      $('#expandir2').click(function(event){
+         event.preventDefault();
+         if(aberto2 === false){
+            $('.hide-info2').show('slow','swing');
+            $('#ver-txt2').text('ver menos');
+            $('.mais-icon2').css('background','url("img/menos-icon.svg") no-repeat center');
+            aberto2 = true;
+         } else {
+            $('.hide-info2').hide('slow','swing');
+            $('#ver-txt2').text('ver mais');
+            $('.mais-icon2').css('background','url("img/mais-icon.svg") no-repeat center');
+            aberto2 = false;
+         }
+      });
+      $('#expandir3').click(function(event){
+         event.preventDefault();
+         if(aberto3 === false){
+            $('.hide-info3').show('slow','swing');
+            $('#ver-txt3').text('ver menos');
+            $('.mais-icon3').css('background','url("img/menos-icon.svg") no-repeat center');
+            aberto3 = true;
+         } else {
+            $('.hide-info3').hide('slow','swing');
+            $('#ver-txt3').text('ver mais');
+            $('.mais-icon3').css('background','url("img/mais-icon.svg") no-repeat center');
+            aberto3 = false;
+         }
+      });
+      $('#expandir4').click(function(event){
+         event.preventDefault();
+         if(aberto4 === false){
+            $('.hide-info4').show('slow','swing');
+            $('#ver-txt4').text('ver menos');
+            $('.mais-icon4').css('background','url("img/menos-icon.svg") no-repeat center');
+            aberto4 = true;
+         } else {
+            $('.hide-info4').hide('slow','swing');
+            $('#ver-txt4').text('ver mais');
+            $('.mais-icon4').css('background','url("img/mais-icon.svg") no-repeat center');
+            aberto4 = false;
+         }
+      });
+
+      //ANIMAÇÕES AO CLICAR NA SETA PARA DESCER A PÁGINA E SUBIR AO TOPO
+      $('.seta-icon a').click(function(event){
+        event.preventDefault();
+        var target = $(this).attr('href');
+        $.scrollTo(target, 800, {easing:'swing'});
+      });
+      $('#voltar_topo').click(function(event){
+        event.preventDefault();
+        var target = $(this).attr('href');
+        $.scrollTo(target, 800, {easing:'swing'});
+      });
+      $(window).scroll(function(){
+        var topo = $('#topo').height() + 60;
+        if($(window).scrollTop() >= topo){
+            $("#voltar_topo").fadeIn("slow", "swing");
+        } else {
+            $("#voltar_topo").fadeOut("slow", "swing");
+        }
+      });
+
+      $('#cardapio-btn').click(function(event){
+        event.preventDefault();
+        $('.cardapio').fadeIn();  
+      })
+      $('#fechar').click(function(){
+        $('.cardapio').fadeOut();
+      })
+
+      var winWidth = $(window).width();
+      var winHeight = $(window).height();
+      var ratio = winWidth / winHeight;
+      var alt = $('body').width() / 1.41;
+      var altMb = $('body').width() / 0.18;
+
+      if (winWidth >= 1200 || ratio >= 1){        
+        $('.cardapio-img').height(alt);
+        $(window).resize(function() {
+            $('.cardapio-img').height(alt);
+        });
+      } else if (winWidth < 1200 && ratio < 1){
+        $('.cardapio-img').height(altMb);
+        $(window).resize(function() {
+            $('.cardapio-img').height(altMb);
+        });
+      }
+      
+
+});
