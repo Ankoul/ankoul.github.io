@@ -577,6 +577,9 @@ input.error { border: 1px solid #DEE9BD; }
 .cardapio h3{
 	padding: 2px 15px;
 }
+#cardapio-item-zoom {
+	display: none;
+}
 
 /*CSS RODAPÉ*/
 #pg-inicio .footer{
@@ -723,9 +726,13 @@ input.error { border: 1px solid #DEE9BD; }
 		padding: 2px 0;
 	}
 	.cardapio-img{
-		background: url('../img/cardapio-img-mb.jpg') no-repeat top;
-		background-size: 100%;
-		height: 1600px;
+		background: none;
+		/*background: url('../img/cardapio-img-mb.jpg') no-repeat top;*/
+		/*background-size: 100%;*/
+		/*height: 1600px;*/
+	}
+	#cardapio-item-zoom {
+		display: inline;
 	}
 	.mapa{
 		margin-left: 0;
@@ -979,9 +986,13 @@ input.error { border: 1px solid #DEE9BD; }
 		padding: 2px 0;
 	}
 	.cardapio-img{
-		background: url('../img/cardapio-img-mb.jpg') no-repeat top;
-		background-size: 100%;
-		height: 3600px;
+		background: none;
+		/*background: url('../img/cardapio-img-mb.jpg') no-repeat top;*/
+		/*background-size: 100%;*/
+		/*height: 3600px;*/
+	}
+	#cardapio-item-zoom {
+		display: inline;
 	}
 	#pg-inicio .footer{
 		top: 100%;
