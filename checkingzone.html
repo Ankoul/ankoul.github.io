@@ -37,17 +37,12 @@ function statusChangeCallback(response){
 }
 </script>
  
- <fb:login-button 
-  scope="public_profile,email"
-  onlogin="checkLoginState();">
-</fb:login-button>
-
-<h1>Files for Download</h1>
- 
-<!-- Chrome on Android won't download files from a site with a self-signed certificate, so we must specify HTTP in the download URL -->
-<a href="http://download.localnet/intro-linux.pdf" class="btn-lg btn-primary" style="display: block;">Linux Book</a><br>
-<a href="http://download.localnet/doc2.pdf" class="btn-lg btn-primary" style="display: block;">Document 2</a><br>
-<a href="http://download.localnet/doc3.pdf" class="btn-lg btn-primary" style="display: block;">Document 3</a><br>
- 
+ <div style="width:100;height:200;margin-left:auto;margin-right:auto;">
+	 <h1> Checking Zone</h1>
+	 <fb:login-button 
+	  scope="public_profile,email"
+	  onlogin="checkLoginState();">
+	</fb:login-button>
+</div>
 </body>
 </html>
