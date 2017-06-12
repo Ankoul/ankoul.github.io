@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    </head>
+<body>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1302129323227233',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+    FB.AppEvents.logPageView();   
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   
+   
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
+</script>
+ 
+ <fb:login-button 
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
+</fb:login-button>
+
+<h1>Files for Download</h1>
+ 
+<!-- Chrome on Android won't download files from a site with a self-signed certificate, so we must specify HTTP in the download URL -->
+<a href="http://download.localnet/intro-linux.pdf" class="btn-lg btn-primary" style="display: block;">Linux Book</a><br>
+<a href="http://download.localnet/doc2.pdf" class="btn-lg btn-primary" style="display: block;">Document 2</a><br>
+<a href="http://download.localnet/doc3.pdf" class="btn-lg btn-primary" style="display: block;">Document 3</a><br>
+ 
+</body>
+</html>
