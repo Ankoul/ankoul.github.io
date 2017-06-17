@@ -1,0 +1,111 @@
+<html>
+<head></head>
+<body>
+<canvas id="gc" width="400" height="400"></canvas>
+<span>Score:<span id="score">0</span></span>
+<span>Maximo:<span id="maximo">0</span></span>
+<script>
+try{
+window.onload = function(){
+	maximo=document.getElementById("maximo");
+	maximo.innerHTML = localStorage.getItem("maxScore") || 0;
+	score=document.getElementById("score");
+	canv=document.getElementById("gc");
+	ctx=canv.getContext("2d");
+	document.addEventListener("keydown",keyPush);
+	setInterval(game,1000/15);
+	//game();game();
+}
+
+positionX=positionY=10;
+squareSize=20;// tamanho de um quadrado em pixels
+boardSize=20;// no board de 400px cabem 20 quadrados de 20 pixels 
+foodX=foodY=9;
+directionX=directionY=0;
+trail=[];
+tail=5;
+function game(){
+	moveSnake();
+	
+	if(overflowLeft()){ positionX= boardSize-1; } 
+	if(overflowRight()){ positionX= 0; } 
+	if(overflowTop()){ positionY= boardSize-1; } 
+	if(overflowBottom()){ positionY= 0; } 
+	
+	drawBoard();
+	
+	ctx.fillStyle = "lime";
+	for(var i=0;i<trail.length;i++){
+		ctx.fillRect(trail[i].x*squareSize,trail[i].y*squareSize,squareSize-2,squareSize-2);
+		if(trail[i].x == positionX && trail[i].y == positionY){
+			tail = 5;
+			score.innerHTML=0;
+		}
+	}
+	trail.push({x:positionX,y:positionY});
+	while(trail.length>tail){
+		trail.shift();
+	}
+	if(foodX == positionX && foodY == positionY){
+		tail++;
+		setTimeout(setScore,0);
+		foodX=Math.floor(Math.random()*boardSize);
+		foodY=Math.floor(Math.random()*boardSize);
+	}
+	
+	drawFood();
+}
+function setScore(){
+	score.innerHTML++;
+	if(parseInt(score.innerHTML) > parseInt(maximo.innerHTML)){
+		maximo.innerHTML = score.innerHTML;
+		localStorage.setItem("maxScore",maximo.innerHTML);
+	}
+}
+function moveSnake(){ 
+    positionX+=directionX;
+	positionY+=directionY;
+}
+function overflowLeft(){ return positionX<0; }
+function overflowTop(){ return positionY<0; }
+function overflowRight(){ return positionX>boardSize-1; }
+function overflowBottom(){ return positionY>boardSize-1; }
+
+function drawBoard(){
+	ctx.fillStyle = "black";
+	ctx.fillRect(0,0,canv.width,canv.height);
+}
+function drawFood(){
+	ctx.fillStyle = "red";
+	ctx.fillRect(foodX*squareSize,foodY*squareSize,squareSize-2,squareSize-2);
+}
+function isCrash(){  };
+
+function keyPush(event){
+	switch(event.keyCode){
+		case 37: directionX=-1; directionY=0; break; //left
+		case 38: directionX=0; directionY=-1; break; //up
+		case 39: directionX=1; directionY=0; break; //right
+		case 40: directionX=0; directionY=1; break; //down
+		case 32: directionX=0; directionY=0; break; //space
+		default: console.log(event.keyCode);
+	}
+}
+
+function keyPush2(event){
+	switch(event.keyCode){
+		case 37: positionX--; break; //left
+		case 38: positionY--; break; //up
+		case 39: positionX++; break; //right
+		case 40: positionY++; break; //down
+	}
+	game();
+}
+
+
+} catch(e){
+	console.log(e);
+}
+</script>
+</body>
+</html>
