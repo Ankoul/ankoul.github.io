@@ -13,6 +13,7 @@ window.onload = function(){
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
 	document.addEventListener("keydown",keyPush);
+	respawFood();
 	setInterval(game,1000/15);
 	//game();game();
 }
@@ -20,8 +21,9 @@ window.onload = function(){
 positionX=positionY=10;
 squareSize=20;// tamanho de um quadrado em pixels
 boardSize=20;// no board de 400px cabem 20 quadrados de 20 pixels 
-foodX=foodY=9;
-directionX=directionY=0;
+
+directionX=1;
+directionY=0;
 trail=[];
 tail=5;
 function game(){
@@ -49,11 +51,14 @@ function game(){
 	if(foodX == positionX && foodY == positionY){
 		tail++;
 		setTimeout(setScore,0);
-		foodX=Math.floor(Math.random()*boardSize);
-		foodY=Math.floor(Math.random()*boardSize);
+		respawFood();
 	}
 	
 	drawFood();
+}
+function respawFood(){
+	foodX=Math.floor(Math.random()*boardSize);
+	foodY=Math.floor(Math.random()*boardSize);
 }
 function setScore(){
 	score.innerHTML++;
