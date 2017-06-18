@@ -1,14 +1,118 @@
 <html>
+<!-- v2.0 -->
 <head></head>
 <body>
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  try{
+  var config = {
+    apiKey: "AIzaSyCAeQEu0_7MvPue78D1_INNPFn1wgDFuEw",
+    authDomain: "games-12285.firebaseapp.com",
+    databaseURL: "https://games-12285.firebaseio.com",
+    projectId: "games-12285",
+    storageBucket: "",
+    messagingSenderId: "405244273995"
+  };
+  firebase.initializeApp(config);
+  
+  var databaseRef = firebase.database().ref('ranking/snake');
+  databaseRef.on("child_added",childAdded);
+  databaseRef.on("child_removed",childRemoved);
+  
+  var mMaxRankingItems=15;
+  var mRanking=[]; 
+  function childAdded(data){
+	var item = data.val();
+	mRanking.push(item);
+	mRankingMap[data.key] = item;
+	refreshRankingView();
+  }
+  function childRemoved(data){
+	item = mRankingMap[data.key];
+	if(!item) return delete mRankingMap[data.key];
+	for(var i=0;i<mRanking.length;i++){
+		if(mRanking[i] == item) {
+			delete mRankingMap[data.key];
+			return mRanking.splice(i,1);
+		}
+	}
+	refreshRankingView();
+  }
+  function refreshRankingView(){
+	var html = "";
+	mRanking.sort(function(a,b){return a.score > b.score ? -1 : a.score < b.score ? 1 : 0});
+	for(var i=0;i<mRanking.length;i++){
+		html += "<li>"+mRanking[i].userName+" pontos:"+mRanking[i].score+"</li>"
+	}
+	document.getElementById("rankingList").innerHTML=html;
+  }
+  function saveRanking(){
+	if(!mGameScore.userName) return;
+	if(mRanking.length < mMaxRankingItems || isGameScoreInRankingPosition()) {
+		removeLastGameScore();
+		return saveGameScore();
+	}
+  }
+  function isGameScoreInRankingPosition(){
+	for(var i=0;i<mRanking.length;i++){
+		if(mRanking[i].score < mGameScore.score) return true;
+	}
+	return false;
+  }
+  function removeLastGameScore(){
+	if(mRanking.length < mMaxRankingItems) return;
+	var toRemove =mRanking.pop();
+	for(var key in mRankingMap){
+		if(toRemove == mRankingMap[key]) mRankingMap[key] = null;
+	}
+	databaseRef.update(mRankingMap);
+  }
+  function saveGameScore() {databaseRef.push(mGameScore);}
+  var mRankingMap = {};
+  function loadRanking(){
+	databaseRef.once('value').then(function(data){
+		mRankingMap = data.val();
+		for(var key in mRankingMap){
+			mRanking.push(mRankingMap[key]);
+		}
+		refreshRankingView();
+	})
+  }
+  } catch(e){
+	console.log(e);
+  }
+</script>
 <canvas id="gc" width="400" height="400"></canvas>
-<span>Score:<span id="score">0</span></span>
-<span>Maximo:<span id="maximo">0</span></span>
+<div id="rankingBoard" style="width:400px;height:620px;position:fixed;left:430px;top:8px;border:0px solid black;">
+	<label>Teu nome aqui:<input type="text" id="userName" onkeyup="setUserName()"/></label><br>
+	<span>Score:<span id="score">0</span></span>
+	<span>Maximo:<span id="maximo">0</span></span>
+	<h5 style="margin-left:auto;margin-right:auto;width:50px;">Ranking</h5>
+	<ol id="rankingList"></ol>
+</div>
+<div style="width:300px;height:620px;position:fixed;left:800px;top:8px;border:0px solid black;">
+	<ul>
+		<li> Sem nome não vai para o Ranking!!! Coloca o nome ali do lado!
+		<li> Joga com as setas.
+	</ul>
+</div>
 <script>
 try{
+mGameScore={
+	userName:'',
+	score:0,
+	highScore:localStorage.getItem("snakeHighScore") || 0
+}
+function setUserName(){
+	mGameScore.userName = document.getElementById("userName").value;
+	localStorage.setItem("userName", mGameScore.userName);
+}
+
 window.onload = function(){
+	document.getElementById("userName").value = mGameScore.userName = localStorage.getItem("userName") || '';
 	maximo=document.getElementById("maximo");
-	maximo.innerHTML = localStorage.getItem("maxScore") || 0;
+	maximo.innerHTML = mGameScore.highScore;
 	score=document.getElementById("score");
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
@@ -17,8 +121,12 @@ window.onload = function(){
 	setInterval(game,1000/15);
 	//game();game();
 }
+var snake={
+	x:10,
+	y:10,
+	direction:{x:1,y:0}
+};
 
-positionX=positionY=10;
 squareSize=20;// tamanho de um quadrado em pixels
 boardSize=20;// no board de 400px cabem 20 quadrados de 20 pixels 
 
@@ -29,26 +137,27 @@ tail=5;
 function game(){
 	moveSnake();
 	
-	if(overflowLeft()){ positionX= boardSize-1; } 
-	if(overflowRight()){ positionX= 0; } 
-	if(overflowTop()){ positionY= boardSize-1; } 
-	if(overflowBottom()){ positionY= 0; } 
+	if(overflowLeft()){ snake.x= boardSize-1; } 
+	if(overflowRight()){ snake.x= 0; } 
+	if(overflowTop()){ snake.y= boardSize-1; } 
+	if(overflowBottom()){ snake.y= 0; } 
 	
 	drawBoard();
 	
 	ctx.fillStyle = "lime";
 	for(var i=0;i<trail.length;i++){
 		ctx.fillRect(trail[i].x*squareSize,trail[i].y*squareSize,squareSize-2,squareSize-2);
-		if(trail[i].x == positionX && trail[i].y == positionY){
-			tail = 5;
-			score.innerHTML=0;
+		if(trail[i].x == snake.x && trail[i].y == snake.y){
+			tail = 5;	
+			saveRanking();
+			score.innerHTML=mGameScore.score=0;
 		}
 	}
-	trail.push({x:positionX,y:positionY});
+	trail.push({x:snake.x,y:snake.y});
 	while(trail.length>tail){
 		trail.shift();
 	}
-	if(foodX == positionX && foodY == positionY){
+	if(foodX == snake.x && foodY == snake.y){
 		tail++;
 		setTimeout(setScore,0);
 		respawFood();
@@ -59,22 +168,29 @@ function game(){
 function respawFood(){
 	foodX=Math.floor(Math.random()*boardSize);
 	foodY=Math.floor(Math.random()*boardSize);
+	for(var i=0;i<trail.length;i++){
+		if(trail[i].x == foodX && trail[i].y == foodY) return respawFood();
+	}
 }
 function setScore(){
-	score.innerHTML++;
+	score.innerHTML= ++mGameScore.score;
 	if(parseInt(score.innerHTML) > parseInt(maximo.innerHTML)){
-		maximo.innerHTML = score.innerHTML;
-		localStorage.setItem("maxScore",maximo.innerHTML);
+		maximo.innerHTML = mGameScore.highScore = mGameScore.score;
+		localStorage.setItem("snakeHighScore",mGameScore.highScore);
 	}
 }
 function moveSnake(){ 
-    positionX+=directionX;
-	positionY+=directionY;
+	if(snake.direction.y != directionY && snake.direction.x != directionX){
+		snake.direction.x= directionX;
+		snake.direction.y= directionY;
+	}
+    snake.x+= snake.direction.x;
+	snake.y+= snake.direction.y;
 }
-function overflowLeft(){ return positionX<0; }
-function overflowTop(){ return positionY<0; }
-function overflowRight(){ return positionX>boardSize-1; }
-function overflowBottom(){ return positionY>boardSize-1; }
+function overflowLeft(){ return snake.x<0; }
+function overflowTop(){ return snake.y<0; }
+function overflowRight(){ return snake.x>boardSize-1; }
+function overflowBottom(){ return snake.y>boardSize-1; }
 
 function drawBoard(){
 	ctx.fillStyle = "black";
@@ -97,36 +213,24 @@ function keyPush(event){
 	}
 }
 function turnLeft(){
-	if(directionX == 0){
-		directionX=-1; 
-		directionY=0;
-	}
+	directionX=-1; directionY=0;
 }
 function turnUp(){
-	if(directionY == 0){
-		directionX=0; 
-		directionY=-1;
-	}
+	directionX=0; directionY=-1;
 }
 function turnRight(){
-	if(directionX == 0){
-		directionX=1; 
-		directionY=0;
-	}
+	directionX=1; directionY=0;
 }
 function turnDown(){
-	if(directionY == 0){
-		directionX=0; 
-		directionY=1;
-	}
+	directionX=0; directionY=1;
 }
 
 function keyPush2(event){
 	switch(event.keyCode){
-		case 37: positionX--; break; //left
-		case 38: positionY--; break; //up
-		case 39: positionX++; break; //right
-		case 40: positionY++; break; //down
+		case 37: snake.x--; break; //left
+		case 38: snake.y--; break; //up
+		case 39: snake.x++; break; //right
+		case 40: snake.y++; break; //down
 	}
 	game();
 }
