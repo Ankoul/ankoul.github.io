@@ -1,21 +1,110 @@
 <html>
 <head></head>
 <body>
-<!-- v1.3 -->
-
+<!-- v2.0 -->
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  try{
+  var config = {
+    apiKey: "AIzaSyCAeQEu0_7MvPue78D1_INNPFn1wgDFuEw",
+    authDomain: "games-12285.firebaseapp.com",
+    databaseURL: "https://games-12285.firebaseio.com",
+    projectId: "games-12285",
+    storageBucket: "",
+    messagingSenderId: "405244273995"
+  };
+  firebase.initializeApp(config);
+  
+  var databaseRef = firebase.database().ref('ranking/pong2');
+  databaseRef.on("child_added",childAdded);
+  databaseRef.on("child_removed",childRemoved);
+  
+  var mRanking=[]; 
+  function childAdded(data){
+	mRanking.push(data.val());
+	mRankingMap[data.key] = data.val();
+	refreshRankingView();
+  }
+  function childRemoved(data){
+	item = mRankingMap[data.key];
+	for(var i=0;i<mRanking.length;i++){
+		if(mRanking[i] == item) {
+			delete mRankingMap[data.key];
+			return mRanking.splice(i,1);
+		}
+	}
+	refreshRankingView();
+  }
+  function refreshRankingView(){
+	var html = "";
+	mRanking.sort(function(a,b){return a.score > b.score ? -1 : a.score < b.score ? 1 : 0});
+	for(var i=0;i<mRanking.length;i++){
+		html += "<li>"+mRanking[i].userName+" pontos:"+mRanking[i].score+" velocidade:"+mRanking[i].speed+"</li>"
+	}
+	document.getElementById("rankingList").innerHTML=html;
+  }
+  function saveRanking(){
+	if(!mGameScore.userName) return;
+	if(mRanking.length < 10 || isGameScoreInRankingPosition()) {
+		removeLastGameScore();
+		return saveGameScore();
+	}
+  }
+  function isGameScoreInRankingPosition(){
+	for(var i=0;i<mRanking.length;i++){
+		if(mRanking[i].score < mGameScore.score) return true;
+	}
+	return false;
+  }
+  function removeLastGameScore(){
+	if(mRanking.length < 10) return;
+	var toRemove =mRanking.pop();
+	for(var key in mRankingMap){
+		if(toRemove == mRankingMap[key]) mRankingMap[key] = null;
+	}
+	databaseRef.update(mRankingMap);
+  }
+  function saveGameScore() {databaseRef.push(mGameScore);}
+  var mRankingMap = {};
+  function loadRanking(){
+	databaseRef.once('value').then(function(data){
+		mRankingMap = data.val();
+		for(var key in mRankingMap){
+			mRanking.push(mRankingMap[key]);
+		}
+		refreshRankingView();
+	})
+  }
+  } catch(e){
+	console.log(e);
+  }
+</script>
 <canvas id="gc" width="400" height="620"></canvas>
+<div id="rankingBoard" style="width:400px;height:620px;position:fixed;left:430px;top:8px;border:1px solid red;">
+	<label>Teu nome aqui:<input type="text" id="userName" onkeyup="setUserName()"/></label>
+	<h5 style="margin-left:auto;margin-right:auto;width:50px;">Ranking</h5>
+	<ol id="rankingList">
+	</ol>
+</div>
 <script>
 try{
 gameIntervalId=0;
 
-score=0;
-highScore = localStorage.getItem("highScore") || 0;
+mGameScore={
+	userName:'',
+	score:0,
+	highScore:localStorage.getItem("highScore") || 0,
+	speed:1,
+	maxSpeed:localStorage.getItem("maxSpeed") || 1
+}
+function setUserName(){
+	mGameScore.userName = document.getElementById("userName").value;
+}
 
 gameVelocity = 15;
-speed=1;
-maxSpeed = localStorage.getItem("maxSpeed") || 1;
 window.onload = function(){
-	
+	//loadRanking();
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
 	document.addEventListener("keydown",keyPush);
@@ -25,10 +114,10 @@ window.onload = function(){
 		clearInterval(gameIntervalId);
 		gameVelocity+=2;
 		gameIntervalId = setInterval(test,1000/gameVelocity);
-		speed++;
-		if(speed > maxSpeed){
-			localStorage.setItem("maxSpeed",speed);
-			maxSpeed = speed;
+		mGameScore.speed++;
+		if(mGameScore.speed > mGameScore.maxSpeed){
+			localStorage.setItem("maxSpeed",mGameScore.speed);
+			mGameScore.maxSpeed = mGameScore.speed;
 		}
 	},20000);
 	
@@ -73,7 +162,7 @@ function test(){
 	drawPlayer(player2);
 	
 	moveBall();
-	if(speed > 3){
+	if(mGameScore.speed > 3){
 		drawImgBall();
 	} else {
 		drawBall();
@@ -84,13 +173,13 @@ function drawBoard(){
 	ctx.fillRect(0,0,canv.width,canv.height);
 }
 function drawScore(){
-	score++;
-	if(score>highScore){
-		highScore=score;
-		localStorage.setItem("highScore",highScore);
+	mGameScore.score++;
+	if(mGameScore.score>mGameScore.highScore){
+		mGameScore.highScore=mGameScore.score;
+		localStorage.setItem("highScore",mGameScore.highScore);
 	}
 	ctx.fillStyle = "white";
-	ctx.fillText("Recorde: "+highScore+" Pontos: "+score+" Velocidade: "+speed+" Velocidade Maxima: "+maxSpeed,2,10);
+	ctx.fillText("Recorde: "+mGameScore.highScore+" Pontos: "+mGameScore.score+" Velocidade: "+mGameScore.speed+" Velocidade Maxima: "+mGameScore.maxSpeed+ " "+mGameScore.userName,2,10);
 }
 function movePlayer(player){
 	player.x += player.directionX;
@@ -114,15 +203,17 @@ function moveBall(){
 		toggleSmile();
 	} else if(overflowBottom(ball) || overflowTop(ball)){
 		resetBallPosition();
-		speed = 1;
+		saveRanking();
+		mGameScore.speed = 1;
 		gameVelocity = 15;
-		score=0;
+		mGameScore.score=0;
 		toggleSmile();
 	} else if(overflowRight(ball) || overflowLeft(ball)){
 		ball.direction.x = -(ball.direction.x);
 		toggleSmile();
 	}  
 }
+
 function resetBallPosition(){
 		ball.x = 10;
 		ball.y = 15;
