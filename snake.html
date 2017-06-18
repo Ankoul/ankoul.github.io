@@ -88,12 +88,36 @@ function isCrash(){  };
 
 function keyPush(event){
 	switch(event.keyCode){
-		case 37: directionX=-1; directionY=0; break; //left
-		case 38: directionX=0; directionY=-1; break; //up
-		case 39: directionX=1; directionY=0; break; //right
-		case 40: directionX=0; directionY=1; break; //down
-		case 32: directionX=0; directionY=0; break; //space
+		case 37: turnLeft(); break; //left
+		case 38: turnUp(); break; //up
+		case 39: turnRight(); break; //right
+		case 40: turnDown(); break; //down
+		//case 32: directionX=0; directionY=0; break; //space
 		default: console.log(event.keyCode);
+	}
+}
+function turnLeft(){
+	if(directionX == 0){
+		directionX=-1; 
+		directionY=0;
+	}
+}
+function turnUp(){
+	if(directionY == 0){
+		directionX=0; 
+		directionY=-1;
+	}
+}
+function turnRight(){
+	if(directionX == 0){
+		directionX=1; 
+		directionY=0;
+	}
+}
+function turnDown(){
+	if(directionY == 0){
+		directionX=0; 
+		directionY=1;
 	}
 }
 
