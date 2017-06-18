@@ -73,7 +73,11 @@ function test(){
 	drawPlayer(player2);
 	
 	moveBall();
-	drawBall();
+	if(speed > 3){
+		drawImgBall();
+	} else {
+		drawBall();
+	}
 }
 function drawBoard(){
 	ctx.fillStyle = "black";
@@ -107,13 +111,16 @@ function moveBall(){
 	ball.y += ball.direction.y;
 	if(playerHitBall()){
 		ball.direction.y = -(ball.direction.y);
+		toggleSmile();
 	} else if(overflowBottom(ball) || overflowTop(ball)){
 		resetBallPosition();
 		speed = 1;
 		gameVelocity = 15;
 		score=0;
+		toggleSmile();
 	} else if(overflowRight(ball) || overflowLeft(ball)){
 		ball.direction.x = -(ball.direction.x);
+		toggleSmile();
 	}  
 }
 function resetBallPosition(){
@@ -129,9 +136,20 @@ function playerHitBall(){
 	}
 }
 function drawBall(){
-	color = ["yellow","yellow","yellow","yellow","lime","cyan","magenta","cyan"]
-	ctx.fillStyle = speed < 8 ? color[speed] : speed%2==0 ?"magenta":"cyan";
+	//color = ["yellow","yellow","yellow","yellow","lime","cyan","magenta"]
+	ctx.fillStyle = "yellow";
 	ctx.fillRect(ball.x*ball.size*squareSize,ball.y*ball.size*squareSize,ball.size*squareSize,ball.size*squareSize);
+}
+mSmiley = new Image();
+mSmiley.src = "smiley.gif";
+mAngry = new Image();
+mAngry.src = "angry.gif";
+mImgBall = mAngry;
+function drawImgBall(){
+	ctx.drawImage(mImgBall, ball.x*ball.size*squareSize,ball.y*ball.size*squareSize,ball.size*squareSize,ball.size*squareSize)
+}
+function toggleSmile(){
+	mImgBall = mImgBall == mAngry ? mSmiley : mAngry;
 }
 function keyPush(event){
 	switch(event.keyCode){
