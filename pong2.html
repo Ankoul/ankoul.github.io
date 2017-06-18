@@ -22,8 +22,9 @@
   
   var mRanking=[]; 
   function childAdded(data){
-	mRanking.push(data.val());
-	mRankingMap[data.key] = data.val();
+	var item = data.val();
+	mRanking.push(item);
+	mRankingMap[data.key] = item;
 	refreshRankingView();
   }
   function childRemoved(data){
