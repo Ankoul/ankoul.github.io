@@ -20,6 +20,7 @@
   databaseRef.on("child_added",childAdded);
   databaseRef.on("child_removed",childRemoved);
   
+  var mMaxRankingItems=25;
   var mRanking=[]; 
   function childAdded(data){
 	var item = data.val();
@@ -29,6 +30,7 @@
   }
   function childRemoved(data){
 	item = mRankingMap[data.key];
+	if(!item) return delete mRankingMap[data.key];
 	for(var i=0;i<mRanking.length;i++){
 		if(mRanking[i] == item) {
 			delete mRankingMap[data.key];
@@ -47,7 +49,7 @@
   }
   function saveRanking(){
 	if(!mGameScore.userName) return;
-	if(mRanking.length < 10 || isGameScoreInRankingPosition()) {
+	if(mRanking.length < mMaxRankingItems || isGameScoreInRankingPosition()) {
 		removeLastGameScore();
 		return saveGameScore();
 	}
@@ -59,7 +61,7 @@
 	return false;
   }
   function removeLastGameScore(){
-	if(mRanking.length < 10) return;
+	if(mRanking.length < mMaxRankingItems) return;
 	var toRemove =mRanking.pop();
 	for(var key in mRankingMap){
 		if(toRemove == mRankingMap[key]) mRankingMap[key] = null;
@@ -82,7 +84,7 @@
   }
 </script>
 <canvas id="gc" width="400" height="620"></canvas>
-<div id="rankingBoard" style="width:400px;height:620px;position:fixed;left:430px;top:8px;border:1px solid red;">
+<div id="rankingBoard" style="width:400px;height:620px;position:fixed;left:430px;top:8px;border:0px solid black;">
 	<label>Teu nome aqui:<input type="text" id="userName" onkeyup="setUserName()"/></label>
 	<h5 style="margin-left:auto;margin-right:auto;width:50px;">Ranking</h5>
 	<ol id="rankingList">
