@@ -107,12 +107,14 @@ mGameScore={
 }
 function setUserName(){
 	mGameScore.userName = document.getElementById("userName").value;
+	localStorage.setItem("userName", mGameScore.userName);
 }
 
 BALL_SPEED_TIME_1 = 1300;
 BALL_SPEED_TIME_2 = 1000;
 
 window.onload = function(){
+	document.getElementById("userName").value = mGameScore.userName = localStorage.getItem("userName") || '';
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
 	document.addEventListener("keydown",keyPush);
