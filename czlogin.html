@@ -36,6 +36,32 @@
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig);
     </script>
+	<script>
+		
+		function getURLParam(n) {
+		  var s = "";
+		  var href = window.location.href;
+		  var idx = href.indexOf("?");
+		  if (idx > -1) {
+			var qs = href.substr(idx + 1);
+			idx = qs.indexOf(n + "=");
+			if (idx > -1) {
+			  s = qs.substr(idx + n.length + 1);
+			  if (s.charAt(4) == '%' || s.charAt(5) == '%') {
+				s = s.replace(/%3a/g, ":");
+				s = s.replace(/%2f/g, "/");
+				s = s.replace(/%3f/g, "?");
+				s = s.replace(/%3d/g, "=");
+				s = s.replace(/%26/g, "&");
+				s = s.replace(/%25/g, "%");
+				s = s.replace(/\+/g, " ");
+			  }
+			  return s;
+			}
+		  }
+		}
+		console.log(getURLParam("loginurl"));
+	</script>
   </head>
   <body>
     <!-- The surrounding HTML is left untouched by FirebaseUI.
