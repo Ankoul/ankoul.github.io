@@ -4,9 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+		<!-- GOOGLE -->
+		<meta name="google-signin-scope" content="profile email">
+		<meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
     </head>
 <body>
-
+<!-- FACEBOOK -->
 <script>
   window.fbAsyncInit = function() {
     FB.init({
@@ -34,15 +38,49 @@ function checkLoginState() {
 }
 function statusChangeCallback(response){
 	console.log(response);
+	if(response.status == 'connected'){
+		window.gUsername = 'usertest';
+		window.gPassword = 'passwd';
+		connect();
+	} else {
+		window.gUsername = '';
+		window.gPassword = '';
+		return setElementValue('logonMessage', 'Por favor, entre com uma das redes sociais abaixo!');
+	}
 }
+// funcções definidas apenas para evitar erros quando não existirem
+function connect(){};
+function setElementValue(){};
 </script>
  
- <div style="width: 210px;height: 200px;margin-left:auto;margin-right:auto;text-align: center;">
-	 <h1> Checking Zone</h1>
-	 <fb:login-button 
+<div style="width: 210px;height: 200px;margin-left:auto;margin-right:auto;text-align: center;">
+	<!-- FACEBOOK -->
+	<h1> Checking Zone</h1>
+	<fb:login-button 
 	  scope="public_profile,email"
 	  onlogin="checkLoginState();">
 	</fb:login-button>
+	<!-- GOOGLE -->
+	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
 </div>
+
+<!-- GOOGLE -->
+<script>
+  function onSignIn(googleUser) {
+	// Useful data for your client-side scripts:
+	var profile = googleUser.getBasicProfile();
+	console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+	console.log('Full Name: ' + profile.getName());
+	console.log('Given Name: ' + profile.getGivenName());
+	console.log('Family Name: ' + profile.getFamilyName());
+	console.log("Image URL: " + profile.getImageUrl());
+	console.log("Email: " + profile.getEmail());
+
+	// The ID token you need to pass to your backend:
+	var id_token = googleUser.getAuthResponse().id_token;
+	console.log("ID Token: " + id_token);
+  };
+</script>
+
 </body>
 </html>
