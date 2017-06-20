@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>CheckingZone</title>
+	<script src="ChilliLibrary.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 	<script>
 	  var config = {
@@ -38,16 +39,23 @@
     </script>
 	<script>
 		
-		function getURLParam(n) {
-		  var s = "";
-		  var href = window.location.href;
-		  var idx = href.indexOf("?");
-		  if (idx > -1) {
+		function getURLParam(param) {
+			var s = "";
+			var href = window.location.href;
+			var idx = href.indexOf("?");
+			if(idx == -1){
+				return;
+			}
+			param += "=";
 			var qs = href.substr(idx + 1);
-			idx = qs.indexOf(n + "=");
-			if (idx > -1) {
-			  s = qs.substr(idx + n.length + 1);
-			  if (s.charAt(4) == '%' || s.charAt(5) == '%') {
+			idx = qs.indexOf(param);
+			if (idx == -1) {
+				return;
+			}
+			endIdx = qs.indexOf("&",idx);
+			endIdx = endIdx > -1 ? endIdx : href.length;
+			s = qs.substring(idx + param.length,endIdx);
+			if (s.charAt(4) == '%' || s.charAt(5) == '%') {
 				s = s.replace(/%3a/g, ":");
 				s = s.replace(/%2f/g, "/");
 				s = s.replace(/%3f/g, "?");
@@ -55,12 +63,9 @@
 				s = s.replace(/%26/g, "&");
 				s = s.replace(/%25/g, "%");
 				s = s.replace(/\+/g, " ");
-			  }
-			  return s;
 			}
-		  }
+			return s;
 		}
-		console.log(getURLParam("loginurl"));
 	</script>
   </head>
   <body>
