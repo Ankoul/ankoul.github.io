@@ -18,10 +18,48 @@
 	</script>
     <script src="https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css" />
+	<script>
+		function getQueryString(url){
+			var s = "";
+			var href = url || window.location.href;
+			var idx = href.indexOf("?");
+			if(idx == -1){
+				return '';
+			}
+			return href.substr(idx + 1);;
+		}
+		function getURLParam(param, url) {
+			var qs = getQueryString(url);
+			if(!qs){
+				return;
+			}
+			param += "=";
+			idx = qs.indexOf(param);
+			if (idx == -1) {
+				return;
+			}
+			endIdx = qs.indexOf("&",idx);
+			endIdx = endIdx > -1 ? endIdx : href.length;
+			return qs.substring(idx + param.length,endIdx);
+			s = qs.substring(idx + param.length,endIdx);
+		}
+		function normalizeUrl(s){
+			if (s.charAt(4) == '%' || s.charAt(5) == '%') {
+				s = s.replace(/%3a/g, ":");
+				s = s.replace(/%2f/g, "/");
+				s = s.replace(/%3f/g, "?");
+				s = s.replace(/%3d/g, "=");
+				s = s.replace(/%26/g, "&");
+				s = s.replace(/%25/g, "%");
+				s = s.replace(/\+/g, " ");
+			}
+			return s;
+		}
+	</script>
     <script type="text/javascript">
       // FirebaseUI config.
       var uiConfig = {
-        signInSuccessUrl: 'czsuccess.html',
+        signInSuccessUrl: 'czlogin.html?'+getQueryString(),
         signInOptions: [
           // Leave the lines as is for the providers you want to offer your users.
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -37,36 +75,33 @@
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig);
     </script>
-	<script>
-		
-		function getURLParam(param) {
-			var s = "";
-			var href = window.location.href;
-			var idx = href.indexOf("?");
-			if(idx == -1){
-				return;
-			}
-			param += "=";
-			var qs = href.substr(idx + 1);
-			idx = qs.indexOf(param);
-			if (idx == -1) {
-				return;
-			}
-			endIdx = qs.indexOf("&",idx);
-			endIdx = endIdx > -1 ? endIdx : href.length;
-			s = qs.substring(idx + param.length,endIdx);
-			if (s.charAt(4) == '%' || s.charAt(5) == '%') {
-				s = s.replace(/%3a/g, ":");
-				s = s.replace(/%2f/g, "/");
-				s = s.replace(/%3f/g, "?");
-				s = s.replace(/%3d/g, "=");
-				s = s.replace(/%26/g, "&");
-				s = s.replace(/%25/g, "%");
-				s = s.replace(/\+/g, " ");
-			}
-			return s;
+	<script type="text/javascript">
+	  chilliController.onUpdate = function(cmd){
+		if(chilliController.clientState == chilliController.stateCodes.AUTH){
+			window.location = normalizeUrl(getURLParam("userurl"));
 		}
-	</script>
+	  }
+	  var doLogon2 = function(response){
+		var metaContent = jQuery(response)[1].content;
+		response = getURLParam("response",metaContent);
+		chilliController.logon2("usertest",response);
+	  };	
+	  var doLogon1 = function(){
+		jQuery.post("login.chi",{username:"usertest",password:"passwd",userurl:"http://www.google.com"},doLogon2,"html");
+	  };
+	  var authStateChanged = function(user) {
+          if (user) {
+            doLogon1();
+          } 
+		  
+	   };
+      var initApp = function() {
+        firebase.auth().onAuthStateChanged(authStateChanged, function(error) {
+          console.log(error);
+        });
+      };
+      window.addEventListener('load', initApp);
+    </script>
   </head>
   <body>
     <!-- The surrounding HTML is left untouched by FirebaseUI.
