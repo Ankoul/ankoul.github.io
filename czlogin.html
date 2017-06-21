@@ -123,12 +123,31 @@
       };
       window.addEventListener('load', initApp);
     </script>
+	<script>
+		var clock = setInterval(query, 1000), term = "Sign in with", portugueseTerm = "Entrar com o ", isChanged = false;
+		function query() {
+			if (isChanged == true) {
+				clearInterval(clock);
+			}
+
+			for (i in document.getElementsByTagName('span')) {
+
+				if (typeof document.getElementsByTagName('span')[i].textContent != "undefined") {
+
+					var element = document.getElementsByTagName('span')[i];
+
+					element.textContent = element.textContent.replace(term,portugueseTerm);
+					isChanged = true;
+				}
+			}
+		}
+	</script>
   </head>
   <body>
 	<div class="outer">
 	  <div class="middle">
 		<div class="inner">
-			<div id="firebaseui-auth-container"></div>
+			<div id="firebaseui-auth-container" style="transform: scale(1.3);"></div>
 		</div>
 	  </div>
 	</div>
