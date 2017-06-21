@@ -1,86 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
-		<!-- GOOGLE -->
-		<meta name="google-signin-scope" content="profile email">
-		<meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
-		<script src="https://apis.google.com/js/platform.js" async defer></script>
-    </head>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>CheckingZone</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+		.outer {
+			display: table;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+		}
+
+		.middle {
+			display: table-cell;
+			vertical-align: middle;
+		}
+
+		.inner {
+			margin-left: auto;
+			margin-right: auto; 
+			width: 128px;
+			transform: scale(4);
+		}
+	</style>
+<!-- redirecting... either by meta tag or javascript -->
+<script type="text/javascript" language="Javascript">
+//<!--
+function getURLParam(n) {
+  var s = "";
+  var href = window.location.href;
+  var idx = href.indexOf("?");
+  if (idx > -1) {
+    var qs = href.substr(idx + 1);
+    idx = qs.indexOf(n + "=");
+    if (idx > -1) {
+      s = qs.substr(idx + n.length + 1);
+      if (s.charAt(4) == '%' || s.charAt(5) == '%') {
+        s = s.replace(/%3a/g, ":");
+        s = s.replace(/%2f/g, "/");
+        s = s.replace(/%3f/g, "?");
+        s = s.replace(/%3d/g, "=");
+        s = s.replace(/%26/g, "&");
+        s = s.replace(/%25/g, "%");
+        s = s.replace(/\+/g, " ");
+      }
+      return s;
+    }
+  }
+}
+
+var loginUrl;
+function redirect() { 
+	window.location = loginUrl; return false; 
+}
+window.onload = function() {
+  loginUrl = getURLParam("loginurl");
+  setTimeout(redirect, 5000);
+}
+//-->
+</script>
+<meta http-equiv="refresh" content="7; URL=/prelogin">
+</head>
 <body>
-<!-- FACEBOOK -->
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '1302129323227233',
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v2.8'
-    });
-    FB.AppEvents.logPageView();   
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-   
-   
-function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
-}
-function statusChangeCallback(response){
-	console.log(response);
-	if(response.status == 'connected'){
-		window.gUsername = 'usertest';
-		window.gPassword = 'passwd';
-		connect();
-	} else {
-		window.gUsername = '';
-		window.gPassword = '';
-		return setElementValue('logonMessage', 'Por favor, entre com uma das redes sociais abaixo!');
-	}
-}
-// funcções definidas apenas para evitar erros quando não existirem
-function connect(){};
-function setElementValue(){};
-</script>
- 
-<div style="width: 210px;height: 200px;margin-left:auto;margin-right:auto;text-align: center;">
-	<!-- FACEBOOK -->
-	<h1> Checking Zone</h1>
-	<fb:login-button 
-	  scope="public_profile,email"
-	  onlogin="checkLoginState();">
-	</fb:login-button>
-	<!-- GOOGLE -->
-	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-</div>
-
-<!-- GOOGLE -->
-<script>
-  function onSignIn(googleUser) {
-	// Useful data for your client-side scripts:
-	var profile = googleUser.getBasicProfile();
-	console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-	console.log('Full Name: ' + profile.getName());
-	console.log('Given Name: ' + profile.getGivenName());
-	console.log('Family Name: ' + profile.getFamilyName());
-	console.log("Image URL: " + profile.getImageUrl());
-	console.log("Email: " + profile.getEmail());
-
-	// The ID token you need to pass to your backend:
-	var id_token = googleUser.getAuthResponse().id_token;
-	console.log("ID Token: " + id_token);
-  };
-</script>
-
+	<div class="outer">
+	  <div class="middle">
+		<div class="inner">
+			<a href="#" onclick="javascript:return redirect();">
+				<img src="czlogo.jpg" alt="" border="0" />
+			</a><br>
+			<small><img src="wait.gif"/> Redirecionando...</small></p>
+			<br><br>
+		</div>
+	  </div>
+	</div>
 </body>
 </html>
