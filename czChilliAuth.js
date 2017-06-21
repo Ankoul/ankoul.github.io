@@ -20,7 +20,7 @@
 		  
 	   };
       var initApp = function() {
-		chilliController.onUpdate();
+		setTimeout(chilliController.onUpdate, 1000);
         firebase.auth().onAuthStateChanged(authStateChanged, function(error) {
           console.log(error);
         });
