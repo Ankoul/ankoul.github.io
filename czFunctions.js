@@ -18,7 +18,7 @@ function getParam(param, url) {
 		return '';
 	}
 	endIdx = qs.indexOf("&",idx);
-	endIdx = endIdx > -1 ? endIdx : href.length;
+	endIdx = endIdx > -1 ? endIdx : url.length;
 	return qs.substring(idx + param.length,endIdx);
 	s = qs.substring(idx + param.length,endIdx);
 }
