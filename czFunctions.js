@@ -10,12 +10,12 @@ function getQueryString(url){
 function getParam(param, url) {
 	var qs = getQueryString(url);
 	if(!qs){
-		return;
+		return '';
 	}
 	param += "=";
 	idx = qs.indexOf(param);
 	if (idx == -1) {
-		return;
+		return '';
 	}
 	endIdx = qs.indexOf("&",idx);
 	endIdx = endIdx > -1 ? endIdx : href.length;
