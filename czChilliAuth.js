@@ -1,12 +1,13 @@
 (function(){
 	chilliController.onUpdate = function(){
 		if(chilliController.clientState == chilliController.stateCodes.AUTH){
-			window.location = normalizeUrl(getURLParam("userurl"));
+			userUrl = getURLParam("userurl") || getURLParam("userurl",getURLParam("loginurl"));
+			window.location = userUrl;
 		}
 	  }
 	  var doLogon2 = function(response){
 		var metaContent = jQuery(response)[1].content;
-		response = getURLParam("response",metaContent);
+		response = getParam("response",metaContent);
 		chilliController.logon2("usertest",response);
 		setTimeout(chilliController.onUpdate, 1000);
 	  };	
@@ -26,4 +27,5 @@
         });
       };
       window.addEventListener('load', initApp);
+	  setTimeout(chilliController.onUpdate, 1000);
 })();

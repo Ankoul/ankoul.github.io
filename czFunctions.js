@@ -8,7 +8,7 @@
 			}
 			return href.substr(idx + 1);;
 		}
-		function getURLParam(param, url) {
+		function getParam(param, url) {
 			var qs = getQueryString(url);
 			if(!qs){
 				return;
@@ -23,7 +23,8 @@
 			return qs.substring(idx + param.length,endIdx);
 			s = qs.substring(idx + param.length,endIdx);
 		}
-		function normalizeUrl(s){
+		function getURLParam(param, url){
+			var s = getParam(param, url);
 			if (s.charAt(4) == '%' || s.charAt(5) == '%') {
 				s = s.replace(/%3a/g, ":");
 				s = s.replace(/%2f/g, "/");
@@ -34,5 +35,21 @@
 				s = s.replace(/\+/g, " ");
 			}
 			return s;
+		}
+		function translateFirebaseButtons(){
+			var clock = setInterval(translate, 10), term = "Sign in with", portugueseTerm = "Entrar com o", isChanged = false;
+			function translate() {
+				if (isChanged) {
+					clearInterval(clock);
+				}
+				var textElements = document.getElementsByClassName("firebaseui-idp-text firebaseui-idp-text-long");
+				for (i in textElements) {
+					var element = textElements[i];
+					if (typeof element.textContent != "undefined") {
+						element.textContent = element.textContent.replace("Sign in with","Entrar com o");
+						isChanged = true;
+					}
+				}
+			}
 		}
 })();

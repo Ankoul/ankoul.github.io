@@ -4,140 +4,39 @@
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CheckingZone</title>
-	<style type="text/css">
-		.outer {
-			display: table;
-			position: absolute;
-			height: 100%;
-			width: 100%;
-		}
-
-		.middle {
-			display: table-cell;
-			vertical-align: middle;
-		}
-
-		.inner {
-			margin-left: auto;
-			margin-right: auto; 
-			width: /*whatever width you want*/;
-		}
-	</style>
+	
+	<!-- checkingzone files -->
+    <link type="text/css" rel="stylesheet" href="czStyle.css" />
 	<script src="jquery-3.2.1.min.js"></script>
-	<script src="ChilliLibrary.js"></script>
+	<script src="czFunctions.js"></script>
+	
+	<!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-	<script>
-	  var config = {
-		apiKey: "AIzaSyByLSe2mR1fDK9lnWUIM_kG7GzqENUkZFs",
-		authDomain: "checkingzone-2da78.firebaseapp.com",
-		databaseURL: "https://checkingzone-2da78.firebaseio.com",
-		projectId: "checkingzone-2da78",
-		storageBucket: "",
-		messagingSenderId: "944683891150"
-	  };
-	  firebase.initializeApp(config);
-	</script>
+    <script src="czInitFirebase.js"></script>
+	
+	<!-- FirebaseUI -->
     <script src="https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css" />
-	<script>
-		function getQueryString(url){
-			var s = "";
-			var href = url || window.location.href;
-			var idx = href.indexOf("?");
-			if(idx == -1){
-				return '';
-			}
-			return href.substr(idx + 1);;
-		}
-		function getURLParam(param, url) {
-			var qs = getQueryString(url);
-			if(!qs){
-				return;
-			}
-			param += "=";
-			idx = qs.indexOf(param);
-			if (idx == -1) {
-				return;
-			}
-			endIdx = qs.indexOf("&",idx);
-			endIdx = endIdx > -1 ? endIdx : href.length;
-			return qs.substring(idx + param.length,endIdx);
-			s = qs.substring(idx + param.length,endIdx);
-		}
-		function normalizeUrl(s){
-			if (s.charAt(4) == '%' || s.charAt(5) == '%') {
-				s = s.replace(/%3a/g, ":");
-				s = s.replace(/%2f/g, "/");
-				s = s.replace(/%3f/g, "?");
-				s = s.replace(/%3d/g, "=");
-				s = s.replace(/%26/g, "&");
-				s = s.replace(/%25/g, "%");
-				s = s.replace(/\+/g, " ");
-			}
-			return s;
-		}
-	</script>
     <script type="text/javascript">
       // FirebaseUI config.
-      var uiConfig = {
-        signInSuccessUrl: 'czlogin.html?'+getQueryString(),
-        signInOptions: [
-          // Leave the lines as is for the providers you want to offer your users.
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID
-        ],
-        // Terms of service url.
-        tosUrl: '<your-tos-url>'
-      };
+		var uiConfig = {
+			signInSuccessUrl: 'checkingzone.html?'+getQueryString(),
+			signInOptions: [
+			  // Leave the lines as is for the providers you want to offer your users.
+			  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+			  firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+			  firebase.auth.TwitterAuthProvider.PROVIDER_ID
+			],
+			// Terms of service url.
+			tosUrl: '<your-tos-url>'
+		};
 
-      // Initialize the FirebaseUI Widget using Firebase.
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
-      // The start method will wait until the DOM is loaded.
-      ui.start('#firebaseui-auth-container', uiConfig);
-    </script>
-	<script type="text/javascript">
-	  chilliController.onUpdate = function(cmd){
-		if(chilliController.clientState == chilliController.stateCodes.AUTH){
-			window.location = normalizeUrl(getURLParam("userurl"));
-		}
-	  }
-	  var doLogon2 = function(response){
-		var metaContent = jQuery(response)[1].content;
-		response = getURLParam("response",metaContent);
-		chilliController.logon2("usertest",response);
-	  };	
-	  var doLogon1 = function(){
-		jQuery.post("login.chi",{username:"usertest",password:"passwd",userurl:"http://www.google.com"},doLogon2,"html");
-	  };
-	  var authStateChanged = function(user) {
-          if (user) {
-            doLogon1();
-          } 
-		  
-	   };
-      var initApp = function() {
-        firebase.auth().onAuthStateChanged(authStateChanged, function(error) {
-          console.log(error);
-        });
-      };
-      window.addEventListener('load', initApp);
-    </script>
-	<script>
-		var clock = setInterval(query, 10), term = "Sign in with", portugueseTerm = "Entrar com o", isChanged = false;
-		function query() {
-			if (isChanged == true) {
-				clearInterval(clock);
-			}
-			var textElements = document.getElementsByClassName("firebaseui-idp-text firebaseui-idp-text-long");
-			for (i in textElements) {
-				var element = textElements[i];
-				if (typeof element.textContent != "undefined") {
-					element.textContent = element.textContent.replace(term,portugueseTerm);
-					isChanged = true;
-				}
-			}
-		}
+		// Initialize the FirebaseUI Widget using Firebase.
+		var ui = new firebaseui.auth.AuthUI(firebase.auth());
+		// The start method will wait until the DOM is loaded.
+		ui.start('#firebaseui-auth-container', uiConfig);
+	  
+		translateFirebaseButtons();
 	</script>
   </head>
   <body>
