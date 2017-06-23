@@ -20,7 +20,7 @@
 			window.location = loginUrl; return false; 
 		}
 		window.onload = function() {
-		  loginUrl = normalizeUrl(getURLParam("loginurl"));
+		  loginUrl = getURLParam("loginurl");
 		  if(loginUrl){
 			setTimeout(redirect, 5000);
 		  }
