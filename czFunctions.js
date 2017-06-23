@@ -5,9 +5,10 @@ function getQueryString(url){
 	if(idx == -1){
 		return '';
 	}
-	return href.substr(idx + 1);;
+	return href.substr(idx + 1);
 }
 function getParam(param, url) {
+	url = url || window.location.href;
 	var qs = getQueryString(url);
 	if(!qs){
 		return '';
