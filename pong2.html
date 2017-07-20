@@ -1,0 +1,304 @@
+<html>
+<head></head>
+<body>
+<!-- v3.1 -->
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  try{
+  var config = {
+    apiKey: "AIzaSyCAeQEu0_7MvPue78D1_INNPFn1wgDFuEw",
+    authDomain: "games-12285.firebaseapp.com",
+    databaseURL: "https://games-12285.firebaseio.com",
+    projectId: "games-12285",
+    storageBucket: "",
+    messagingSenderId: "405244273995"
+  };
+  firebase.initializeApp(config);
+  
+  var databaseRef = firebase.database().ref('ranking/pong2');
+  databaseRef.on("child_added",childAdded);
+  databaseRef.on("child_removed",childRemoved);
+  
+  var mMaxRankingItems=25;
+  var mRanking=[]; 
+  function childAdded(data){
+	var item = data.val();
+	mRanking.push(item);
+	mRankingMap[data.key] = item;
+	refreshRankingView();
+  }
+  function childRemoved(data){
+	item = mRankingMap[data.key];
+	if(!item) return delete mRankingMap[data.key];
+	for(var i=0;i<mRanking.length;i++){
+		if(mRanking[i] == item) {
+			delete mRankingMap[data.key];
+			return mRanking.splice(i,1);
+		}
+	}
+	refreshRankingView();
+  }
+  function refreshRankingView(){
+	var html = "";
+	mRanking.sort(function(a,b){return a.score > b.score ? -1 : a.score < b.score ? 1 : 0});
+	for(var i=0;i<mRanking.length;i++){
+		html += "<li>"+mRanking[i].userName+" pontos:"+mRanking[i].score+" velocidade:"+mRanking[i].speed+"</li>"
+	}
+	document.getElementById("rankingList").innerHTML=html;
+  }
+  function saveRanking(){
+	if(!mGameScore.userName) return;
+	if(mRanking.length < mMaxRankingItems || isGameScoreInRankingPosition()) {
+		removeLastGameScore();
+		return saveGameScore();
+	}
+  }
+  function isGameScoreInRankingPosition(){
+	for(var i=0;i<mRanking.length;i++){
+		if(mRanking[i].score < mGameScore.score) return true;
+	}
+	return false;
+  }
+  function removeLastGameScore(){
+	if(mRanking.length < mMaxRankingItems) return;
+	var toRemove =mRanking.pop();
+	for(var key in mRankingMap){
+		if(toRemove == mRankingMap[key]) mRankingMap[key] = null;
+	}
+	databaseRef.update(mRankingMap);
+  }
+  function saveGameScore() {databaseRef.push(mGameScore);}
+  var mRankingMap = {};
+  function loadRanking(){
+	databaseRef.once('value').then(function(data){
+		mRankingMap = data.val();
+		for(var key in mRankingMap){
+			mRanking.push(mRankingMap[key]);
+		}
+		refreshRankingView();
+	})
+  }
+  } catch(e){
+	console.log(e);
+  }
+</script>
+<canvas id="gc" width="400" height="620"></canvas>
+<div id="rankingBoard" style="width:400px;height:620px;position:fixed;left:430px;top:8px;border:0px solid black;">
+	<label>Teu nome aqui:<input type="text" id="userName" onkeyup="setUserName()"/></label>
+	<h5 style="margin-left:auto;margin-right:auto;width:50px;">Ranking</h5>
+	<ol id="rankingList"></ol>
+</div>
+<div style="width:300px;height:620px;position:fixed;left:800px;top:8px;border:0px solid black;">
+	<ul>
+		<li> Sem nome não vai para o Ranking!!! Coloca o nome ali do lado!
+		<li> Joga com A,D e setas.
+	</ul>
+</div>
+<script>
+try{
+
+mGameScore={
+	userName:'',
+	score:0,
+	highScore:localStorage.getItem("highScore") || 0,
+	speed:1,
+	maxSpeed:localStorage.getItem("maxSpeed") || 1
+}
+function setUserName(){
+	mGameScore.userName = document.getElementById("userName").value;
+	localStorage.setItem("userName", mGameScore.userName);
+}
+
+BALL_SPEED_TIME_1 = 1300;
+BALL_SPEED_TIME_2 = 1000;
+
+window.onload = function(){
+	document.getElementById("userName").value = mGameScore.userName = localStorage.getItem("userName") || '';
+	canv=document.getElementById("gc");
+	ctx=canv.getContext("2d");
+	document.addEventListener("keydown",keyPush);
+	document.addEventListener("keyup",keyUp);
+	startGame();	
+}
+
+var mGameFramesIntervalId,mGameIntervalId;
+
+function startGame(){
+	var gameVelocity = 15;
+	mGameScore.speed = 1;
+	mGameScore.score=0;
+	
+	clearInterval(mGameFramesIntervalId);
+	mGameFramesIntervalId = setInterval(test,BALL_SPEED_TIME_1/gameVelocity);
+	
+	clearInterval(mGameIntervalId);
+	mGameIntervalId = setInterval(function(){
+		clearInterval(mGameFramesIntervalId);
+		gameVelocity+=2;
+		mGameFramesIntervalId = setInterval(test,BALL_SPEED_TIME_2/gameVelocity);
+		mGameScore.speed++;
+		if(mGameScore.speed > mGameScore.maxSpeed){
+			localStorage.setItem("maxSpeed",mGameScore.speed);
+			mGameScore.maxSpeed = mGameScore.speed;
+		}
+	},20000);
+}
+KEY_LEFT=37;
+KEY_RIGHT=39;
+KEY_D=68;
+KEY_A=65;
+positionX=positionY=10;
+squareSize=20;// tamanho de um quadrado em pixels
+board = {width:20,height:31};
+foodX=foodY=9;
+directionX=directionY=0;
+player1 = {
+	x:7,
+	y:29,
+	size:6,
+	directionX:0
+};
+player2 = {
+	x:7,
+	y:1,
+	size:6,
+	directionX:0
+};
+ball = {
+	x:10,
+	y:15,
+	size:1,
+	direction:{x:1,y:1},
+	isMovingUp: function(){return ball.direction.y < 0;},
+	isMovingDown: function(){return ball.direction.y > 0;}
+};
+function test(){
+	drawBoard();
+	drawScore();
+	
+	movePlayer(player1);
+	drawPlayer(player1);
+	
+	movePlayer(player2);
+	drawPlayer(player2);
+	
+	moveBall();
+	if(mGameScore.speed > 1){
+		drawImgBall();
+	} else {
+		drawBall();
+	}
+}
+function drawBoard(){
+	ctx.fillStyle = "black";
+	ctx.fillRect(0,0,canv.width,canv.height);
+}
+function drawScore(){
+	mGameScore.score++;
+	if(mGameScore.score>mGameScore.highScore){
+		mGameScore.highScore=mGameScore.score;
+		localStorage.setItem("highScore",mGameScore.highScore);
+	}
+	ctx.fillStyle = "white";
+	ctx.fillText("Recorde: "+mGameScore.highScore+" Pontos: "+mGameScore.score+" Velocidade: "+mGameScore.speed+" Velocidade Maxima: "+mGameScore.maxSpeed+ " "+mGameScore.userName,2,10);
+}
+function movePlayer(player){
+	player.x += player.directionX;
+	if(overflowLeft(player)){
+		player.x= 0;
+		stopMovePlayer(player);
+	} else if(overflowRight(player)){
+		player.x= board.width-player.size;
+		stopMovePlayer(player);
+	}
+}
+function drawPlayer(player){
+	ctx.fillStyle = "red";
+	ctx.fillRect(player.x*squareSize,player.y*squareSize,player.size*squareSize-2,squareSize-2);
+}
+function moveBall(){
+	ball.x += ball.direction.x;
+	ball.y += ball.direction.y;
+	if(playerHitBall()){
+		ball.direction.y = -(ball.direction.y);
+		toggleSmile();
+	} else if(overflowBottom(ball) || overflowTop(ball)){
+		resetBallPosition();
+		saveRanking();
+		startGame();
+	} else if(overflowRight(ball) || overflowLeft(ball)){
+		ball.direction.x = -(ball.direction.x);
+		toggleSmile();
+	}  
+}
+
+function resetBallPosition(){
+		ball.x = 10;
+		ball.y = 15;
+}
+
+function playerHitBall(){
+	if(ball.isMovingDown()){
+		return ball.x+ball.size > player1.x && ball.x < player1.x+player1.size && ball.y+ball.size >= player1.y && ball.y+ball.size <= player1.y+1;
+	} else if (ball.isMovingUp()){
+		return ball.x+ball.size > player2.x && ball.x < player2.x+player2.size && ball.y <= player2.y+1 && ball.y >= player2.y;
+	}
+}
+function drawBall(){
+	//color = ["yellow","yellow","yellow","yellow","lime","cyan","magenta"]
+	ctx.fillStyle = "yellow";
+	ctx.fillRect(ball.x*ball.size*squareSize,ball.y*ball.size*squareSize,ball.size*squareSize,ball.size*squareSize);
+}
+mSmiley = new Image();
+mSmiley.src = "smiley.gif";
+mAngry = new Image();
+mAngry.src = "angry.gif";
+mImgBall = mAngry;
+function drawImgBall(){
+	ctx.drawImage(mImgBall, ball.x*ball.size*squareSize,ball.y*ball.size*squareSize,ball.size*squareSize,ball.size*squareSize)
+}
+function toggleSmile(){
+	mImgBall = mImgBall == mAngry ? mSmiley : mAngry;
+}
+function keyPush(event){
+	switch(event.keyCode){
+		case KEY_LEFT: movePlayerToleft(player1); break; 
+		case KEY_RIGHT: movePlayerToRight(player1); break; 
+		case KEY_D: movePlayerToRight(player2); break; 
+		case KEY_A: movePlayerToleft(player2); break; 
+		default: console.log(event.keyCode);
+	}
+}
+function keyUp(){
+	switch(event.keyCode){
+		case KEY_LEFT: stopMovePlayer(player1); break; 
+		case KEY_RIGHT: stopMovePlayer(player1); break; 
+		case KEY_D: stopMovePlayer(player2); break; 
+		case KEY_A: stopMovePlayer(player2); break; 
+		default: console.log(event.keyCode);
+	}
+}
+function stopMovePlayer(player){
+	player.directionX=0;
+}
+
+function movePlayerToleft(player){
+		player.directionX-= 3;
+}
+function movePlayerToRight(player){
+		player.directionX+= 3;
+}
+function overflowLeft(player){ return player.x<=0; }
+function overflowTop(ball){ return ball.y<0; }
+function overflowRight(player){ return player.x+player.size>board.width-1; }
+function overflowBottom(ball){ return ball.y>=board.height; }
+
+
+
+} catch(e){
+	console.log(e);
+}
+</script>
+</body>
+</html>

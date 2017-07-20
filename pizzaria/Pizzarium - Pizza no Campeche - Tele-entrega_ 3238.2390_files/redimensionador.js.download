@@ -1,0 +1,10 @@
+$(document).ready(function(){
+
+	var altTopo = $('.header').height() + $('.inicio-info').height();
+	var altFinal = altTopo + 50;
+
+	if ($(window).height() <= altTopo){
+		$('.footer').css('top' , altFinal);
+	}
+
+});

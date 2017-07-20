@@ -1,0 +1,23 @@
+{
+  "name": "Conectare MVP",
+  "description": "Online menu for restaurants, bars and places to eat and drink",
+  "main": "",
+  "authors": [
+    "Raoni Caselli <https://behance.net/raonicaselli>"
+    "Gilson Souza"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/raonicaselli",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "fontawesome#^4.7.0",
+    "bootstrap-sass": "^3.3.7"
+  }
+}

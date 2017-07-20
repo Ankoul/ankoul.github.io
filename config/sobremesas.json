@@ -1,0 +1,30 @@
+[
+  {
+    "nome": "Naked Cerejas",
+    "imagem": "https://analugourmet.files.wordpress.com/2013/11/captura_imagem_by_jahjr-6.jpg",
+    "ingredientes":"Creme de cerejas, creme de champagne, creme trufado de chocolate. Figos, amoras, cerejas, casquinha de limão cristalizadas, gotas de chocolate",
+    "descricao": "Uma deliciona sobremesa para alegrar o seu dia",
+    "valor": "R$20"
+  },
+  {
+    "nome": "Naked Cake",
+    "imagem": "http://www.mariatorta.com.br/imagens/cardapio/tortas/naked-cake-morango.jpg",
+    "ingredientes":"Recheio de brigadeiro branco com morangos e cobertura de morangos polvilhados de açúcar",
+    "descricao": "Esse nome significa literalmente “torta pelada” por não levar cobertura nenhuma, deixando os recheios à mostra... Escorrendo, do jeito que a gente gosta! ",
+    "valor": "R$20"
+  },
+  {
+    "nome": "Pudim de leite condensado",
+    "imagem": "http://img.itdg.com.br/tdg/images/recipes/000/003/687/38788/38788_original.jpg",
+    "ingredientes": "leite condensado, leite de vaca, ovos",
+    "descricao": "Simples e gostoso",
+    "valor": "R$15"
+  },
+  {
+    "nome": "TAÇA COM BISCOITO DE CHOCOLATE",
+    "imagem": "http://img.itdg.com.br/tdg/images/recipes/000/190/009/271850/271850_original.jpg?mode=crop&width=600&height=450",
+    "ingredientes":"biscoitos de chocolate picados, creme de gemas, creme de avelã, avelãs torradas",
+    "descricao": "Mais pedido da casa",
+    "valor": "R$10"
+  }
+]
