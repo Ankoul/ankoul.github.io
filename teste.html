@@ -1,0 +1,48 @@
+<html>
+<head>
+<script src="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css" />
+
+</head>
+
+
+<body>
+
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCaK1YSr84uUHyRb5Fb_s-XLMzWHKYAUuE",
+    authDomain: "teste-73ad8.firebaseapp.com",
+    databaseURL: "https://teste-73ad8.firebaseio.com",
+    projectId: "teste-73ad8",
+    storageBucket: "",
+    messagingSenderId: "1002627148786"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script type="text/javascript">
+      // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: '<url-to-redirect-to-on-success>',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        tosUrl: '<your-tos-url>'
+      };
+// Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+	
+	<h1>Teste</h1>
+    <div id="firebaseui-auth-container"></div>
+	
+</body>
+
+</html>
