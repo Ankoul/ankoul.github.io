@@ -80,10 +80,10 @@
             <h2 class="featurette-heading">Quero saber mais
                 <!--<span class="text-muted">mais texto.</span>-->
             </h2>
-            <form>
+            <form id="contactForm">
                 <div class="form-group">
                     <label for="name">Nome</label>
-                    <input type="email" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Nome">
+                    <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Nome">
                     <!--<small id="nameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                 </div>
                 <div class="form-group">
@@ -93,13 +93,15 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">Telefone</label>
-                    <input type="email" class="form-control" id="phone" aria-describedby="phoneHelp" placeholder="Telefone">
+                    <input type="text" class="form-control" id="phone" aria-describedby="phoneHelp" placeholder="Telefone">
                     <!--<small id="phoneHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                 </div>
                 <div class="form-group">
                     <label for="message">Mensagem</label>
                     <textarea class="form-control" id="message" aria-describedby="msgHelp"  placeholder="Mensagem"></textarea>
                     <small id="msgHelp" class="form-text text-muted">Não sabe que mensagem deixar? Deixe em branco que entraremos em contato.</small>
+                    <small id="noPhoneOrEmail" class="form-text hidden text-danger">Que tal informar email ou telefone? precisamos disso para entrar em contato.</small>
+                    <small id="successMsg" class="form-text hidden text-success">Obrigado pelo contato, retornaremos em breve.</small>
                 </div>
                 <!--<div class="form-check">-->
                     <!--<label class="form-check-label">-->
@@ -107,7 +109,7 @@
                         <!--Check me out-->
                     <!--</label>-->
                 <!--</div>-->
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="button" class="btn btn-primary" id="sendContact">Enviar</button>
             </form>
         </div>
 
@@ -125,12 +127,51 @@
     </div>
     <!-- /.container -->
 
+
+    <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyA9TmBQab1ejRcakUjOz3_lDRKjDjAc0UY",
+            authDomain: "bike-223cb.firebaseapp.com",
+            databaseURL: "https://bike-223cb.firebaseio.com",
+            projectId: "bike-223cb",
+            storageBucket: "",
+            messagingSenderId: "652816927858"
+        };
+        firebase.initializeApp(config);
+
+        var databaseRef = firebase.database().ref('bike/contact');
+
+    </script>
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+    <script>
+
+        $('#sendContact').on("click", function () {
+
+            $("#msgHelp").addClass('hidden');
+            $("#noPhoneOrEmail").addClass('hidden');
+            $("#successMsg").addClass('hidden');
+
+            var contact = {
+                "name": document.getElementById("name").value,
+                "email": document.getElementById("email").value,
+                "phone": document.getElementById("phone").value,
+                "message": document.getElementById("message").value
+            };
+            if(!contact.email && !contact.phone || !contact.email.trim() && !contact.phone.trim()){
+                return $("#noPhoneOrEmail").removeClass('hidden');
+            }
+            databaseRef.push(contact);
+            document.getElementById("contactForm").reset();
+            $("#successMsg").removeClass('hidden');
+        });
+    </script>
 </body>
 
 </html>
