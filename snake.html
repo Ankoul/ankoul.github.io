@@ -43,8 +43,7 @@
 	var html = "";
 	mRanking.sort(function(a,b){return a.score > b.score ? -1 : a.score < b.score ? 1 : 0});
 	for(var i=0;i<mRanking.length;i++){
-		let lastPlayedGame = mRanking.length === i+1 ? "  [Ultimo jogo]" : "";
-		html += "<li>"+mRanking[i].userName+" pontos:"+mRanking[i].score+ lastPlayedGame + "</li>"
+		html += `<li>${mRanking[i].userName} pontos:${mRanking[i].score} ${mRanking[i].isLast ? '[Último jogo]' :''}</li>`;
 	}
 	document.getElementById("rankingList").innerHTML=html;
   }
@@ -63,11 +62,13 @@
 	if(mRanking.length < mMaxRankingItems) return;
 	var toRemove =mRanking.pop();
 	for(var key in mRankingMap){
+		mRankingMap[key].isLast = false;
 		if(toRemove == mRankingMap[key]) mRankingMap[key] = null;
 	}
 	databaseRef.update(mRankingMap);
   }
   function saveGameScore() {
+	mGameScore.isLast = true;
 	databaseRef.push(mGameScore);
   }
   var mRankingMap = {};
