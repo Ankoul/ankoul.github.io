@@ -20,7 +20,7 @@
   databaseRef.on("child_added",childAdded);
   databaseRef.on("child_removed",childRemoved);
   
-  var mMaxRankingItems=15;
+  var mMaxRankingItems=16;
   var mRanking=[]; 
   function childAdded(data){
 	var item = data.val();
@@ -43,16 +43,15 @@
 	var html = "";
 	mRanking.sort(function(a,b){return a.score > b.score ? -1 : a.score < b.score ? 1 : 0});
 	for(var i=0;i<mRanking.length;i++){
-		html += "<li>"+mRanking[i].userName+" pontos:"+mRanking[i].score+"</li>"
+		let lastPlayedGame = mRanking.length === i+1 ? "  <--- Ultimo jogo" : "";
+		html += "<li>"+mRanking[i].userName+" pontos:"+mRanking[i].score+ lastPlayedGame + "</li>"
 	}
 	document.getElementById("rankingList").innerHTML=html;
   }
   function saveRanking(){
 	if(!mGameScore.userName) return;
-	if(mRanking.length < mMaxRankingItems || isGameScoreInRankingPosition()) {
-		removeLastGameScore();
-		return saveGameScore();
-	}
+	removeLastGameScore();
+	saveGameScore();
   }
   function isGameScoreInRankingPosition(){
 	for(var i=0;i<mRanking.length;i++){
@@ -68,7 +67,9 @@
 	}
 	databaseRef.update(mRankingMap);
   }
-  function saveGameScore() {databaseRef.push(mGameScore);}
+  function saveGameScore() {
+	databaseRef.push(mGameScore);
+  }
   var mRankingMap = {};
   function loadRanking(){
 	databaseRef.once('value').then(function(data){
