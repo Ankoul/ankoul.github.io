@@ -48,12 +48,12 @@
 	document.getElementById("rankingList").innerHTML=html;
   }
   function saveRanking(){
-	setTimeout(()=>{
-	
-	if(!mGameScore.userName) setUserName(prompt("Coloca o teu nome aí:"));
-	if(!mGameScore.userName) return;
-	removeLastGameScore();
-	saveGameScore();
+	let score = mGameScore.score;
+	setTimeout(()=>{	
+		if(!mGameScore.userName) setUserName(prompt("Coloca o teu nome aí:"));
+		if(!mGameScore.userName) return;
+		removeLastGameScore();
+		saveGameScore(score);
 	},1);
   }
   function setUserName(userName){
@@ -76,9 +76,9 @@
 	}
 	databaseRef.update(mRankingMap);
   }
-  function saveGameScore() {
+  function saveGameScore(score) {
 	mGameScore.isLast = true;
-	databaseRef.push(mGameScore);
+	databaseRef.push({...mGameScore, score:score});
   }
   var mRankingMap = {};
   function loadRanking(){
