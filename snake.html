@@ -43,7 +43,7 @@
 	var html = "";
 	mRanking.sort(function(a,b){return a.score > b.score ? -1 : a.score < b.score ? 1 : 0});
 	for(var i=0;i<mRanking.length;i++){
-		html += "<li>"+mRanking[i].userName+" pontos:"mRanking[i].score+" "+(mRanking[i].isLast ? '[Último jogo]' :'')+"</li>";
+		html += "<li>"+mRanking[i].userName+" pontos:" + mRanking[i].score+" "+(mRanking[i].isLast ? '[Último jogo]' :'')+"</li>";
 	}
 	document.getElementById("rankingList").innerHTML=html;
   }
