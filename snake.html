@@ -48,10 +48,13 @@
 	document.getElementById("rankingList").innerHTML=html;
   }
   function saveRanking(){
+	setTimeout(()=>{
+	
 	if(!mGameScore.userName) setUserName(prompt("Coloca o teu nome aí:"));
 	if(!mGameScore.userName) return;
 	removeLastGameScore();
 	saveGameScore();
+	},1);
   }
   function setUserName(userName){
 	if(!userName) return; 
