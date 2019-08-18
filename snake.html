@@ -43,14 +43,20 @@
 	var html = "";
 	mRanking.sort(function(a,b){return a.score > b.score ? -1 : a.score < b.score ? 1 : 0});
 	for(var i=0;i<mRanking.length;i++){
-		html += `<li>${mRanking[i].userName} pontos:${mRanking[i].score} ${mRanking[i].isLast ? '[Último jogo]' :''}</li>`;
+		html += "<li>"+mRanking[i].userName+" pontos:"mRanking[i].score+" "+(mRanking[i].isLast ? '[Último jogo]' :'')+"</li>";
 	}
 	document.getElementById("rankingList").innerHTML=html;
   }
   function saveRanking(){
+	if(!mGameScore.userName) setUserName(prompt("Coloca o teu nome aí:"));
 	if(!mGameScore.userName) return;
 	removeLastGameScore();
 	saveGameScore();
+  }
+  function setUserName(userName){
+	if(!userName) return; 
+	document.getElementById("userName").value = userName;
+	saveUserName();
   }
   function isGameScoreInRankingPosition(){
 	for(var i=0;i<mRanking.length;i++){
@@ -87,9 +93,11 @@
 </script>
 <canvas id="gc" width="400" height="400"></canvas>
 <div id="rankingBoard" style="width:400px;height:620px;position:fixed;left:430px;top:8px;border:0px solid black;">
-	<label>Teu nome aqui:<input type="text" id="userName" onkeyup="setUserName()"/></label><br>
-	<span>Score:<span id="score">0</span></span>
-	<span>Maximo:<span id="maximo">0</span></span>
+	<h3>
+		<span>Score:<span id="score">0</span></span>
+		<span>Maximo:<span id="maximo">0</span></span>
+	</h3>
+	<input type="text" id="userName" onkeyup="saveUserName()" placeholder="Teu nome aqui" /><br>
 	<h5 style="margin-left:auto;margin-right:auto;width:50px;">Ranking</h5>
 	<ol id="rankingList"></ol>
 </div>
@@ -106,7 +114,7 @@ mGameScore={
 	score:0,
 	highScore:localStorage.getItem("snakeHighScore") || 0
 }
-function setUserName(){
+function saveUserName(){
 	mGameScore.userName = document.getElementById("userName").value;
 	localStorage.setItem("userName", mGameScore.userName);
 }
