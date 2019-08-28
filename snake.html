@@ -114,6 +114,13 @@
 </div>
 <script>
 try{
+squareSize=20;// tamanho de um quadrado em pixels
+boardSize=20;// no board de 400px cabem 20 quadrados de 20 pixels 
+
+directionX=1;
+directionY=0;
+trail=[];
+
 mGameScore={
 	userName:'',
 	score:0,
@@ -123,6 +130,59 @@ function saveUserName(){
 	mGameScore.userName = document.getElementById("userName").value;
 	localStorage.setItem("userName", mGameScore.userName);
 }
+class Food {
+	x = 0; 
+	y = 0; 
+	color = "red";
+	points = 1;
+	grow = 1;
+	birth = Date.now();
+	constructor(){
+		this.respaw();
+	}
+	
+	respaw = ()=>{
+		this.birth = Date.now();
+		this.x=Math.floor(Math.random()*boardSize);
+		this.y=Math.floor(Math.random()*boardSize);
+		for(var i=0;i<trail.length;i++){
+			if(trail[i].x == this.x && trail[i].y == this.y) return this.respaw();
+		}
+	};
+	draw = ()=>{
+		if(this.isVisible()){
+			ctx.fillStyle = this.color;
+			ctx.fillRect(this.x*squareSize,this.y*squareSize,squareSize-2,squareSize-2);
+		}
+	};
+	isVisible = ()=> true;
+};
+class SpecialFood extends Food {
+	
+	constructor(color, points, grow, respawTime, aliveTime){
+		super();
+		this.color = color;
+		this.points = points;
+		this.grow = grow;
+		this.showTimeStart = respawTime;
+		this.showTimeEnd = respawTime + aliveTime;
+	}
+	
+	isVisible = ()=>{
+		let age = Date.now() - this.birth;
+		if(age > this.showTimeEnd) {
+			return this.respaw();
+		}
+		return age > this.showTimeStart;
+	};
+}
+
+let food = new Food();
+let specialFood = new SpecialFood("blue", 2, 2, (1000 * 40), (1000 * 15));
+let rotenFood = new SpecialFood("gray", 0, 3, (1000 * 20), (1000 * 20));
+let rotenFood2 = new SpecialFood("gray", 0, 3, (1000 * 20), (1000 * 20));
+let goodFood = new SpecialFood("yellow", 0, -1, (1000 * 60), (1000 * 10));
+let foods = [food, specialFood, rotenFood, rotenFood2, goodFood];
 
 window.onload = function(){
 	document.getElementById("userName").value = mGameScore.userName = localStorage.getItem("userName") || '';
@@ -132,8 +192,7 @@ window.onload = function(){
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
 	document.addEventListener("keydown",keyPush);
-	food.respaw();
-	specialFood.respaw();
+	
 	setInterval(game,1000/15);
 	//game();game();
 }
@@ -144,7 +203,7 @@ var snake={
 	direction:{x:1,y:0},
 	ate: (food)=> {
 		if(food.isVisible() && food.x == snake.x && food.y == snake.y){
-			snake.tail += food.points;
+			snake.tail += food.grow;
 			food.respaw();
 			return true;
 		}
@@ -160,90 +219,6 @@ var snake={
 	}
 };
 
-
-let food = {
-	x:0, 
-	y:0, 
-	points: 1,
-	respaw: ()=>{
-		food.x=Math.floor(Math.random()*boardSize);
-		food.y=Math.floor(Math.random()*boardSize);
-		for(var i=0;i<trail.length;i++){
-			if(trail[i].x == food.x && trail[i].y == food.y) return food.respaw();
-		}
-	},
-	draw: ()=>{
-		ctx.fillStyle = "red";
-		ctx.fillRect(food.x*squareSize,food.y*squareSize,squareSize-2,squareSize-2);
-	},
-	isVisible: ()=> true,
-};
-let specialFood = {
-	x:0, 
-	y:0, 
-	points: 2,
-	showTimeStart: (1000 * 30 * 1),
-	showTimeEnd: ((1000 * 30 * 1) + (1000 * 15)),
-	birth: Date.now(),
-	respaw: ()=>{
-		specialFood.birth = Date.now();
-		specialFood.x=Math.floor(Math.random()*boardSize);
-		specialFood.y=Math.floor(Math.random()*boardSize);
-		for(var i=0;i<trail.length;i++){
-			if(trail[i].x == specialFood.x && trail[i].y == specialFood.y) return specialFood.respaw();
-		}
-	},
-	draw: ()=>{
-		if(specialFood.isVisible()){
-			ctx.fillStyle = "blue";
-			ctx.fillRect(specialFood.x*squareSize,specialFood.y*squareSize,squareSize-2,squareSize-2);
-		}
-	},
-	isVisible: ()=>{
-		let age = Date.now() - specialFood.birth;
-		if(age > specialFood.showTimeEnd) {
-			return specialFood.respaw();
-		}
-		return age > specialFood.showTimeStart;
-	},
-};
-
-let rotenFood = {
-	x:0, 
-	y:0, 
-	points: 5,
-	showTimeStart: (1000 * 20 * 1),
-	showTimeEnd: ((1000 * 20 * 1) + (1000 * 15)),
-	birth: Date.now(),
-	respaw: ()=>{
-		rotenFood.birth = Date.now();
-		rotenFood.x=Math.floor(Math.random()*boardSize);
-		rotenFood.y=Math.floor(Math.random()*boardSize);
-		for(var i=0;i<trail.length;i++){
-			if(trail[i].x == rotenFood.x && trail[i].y == rotenFood.y) return rotenFood.respaw();
-		}
-	},
-	draw: ()=>{
-		if(rotenFood.isVisible()){
-			ctx.fillStyle = "gray";
-			ctx.fillRect(rotenFood.x*squareSize,rotenFood.y*squareSize,squareSize-2,squareSize-2);
-		}
-	},
-	isVisible: ()=>{
-		let age = Date.now() - rotenFood.birth;
-		if(age > rotenFood.showTimeEnd) {
-			return rotenFood.respaw();
-		}
-		return age > rotenFood.showTimeStart;
-	},
-};
-
-squareSize=20;// tamanho de um quadrado em pixels
-boardSize=20;// no board de 400px cabem 20 quadrados de 20 pixels 
-
-directionX=1;
-directionY=0;
-trail=[];
 
 function game(){
 	snake.move();
@@ -268,18 +243,13 @@ function game(){
 	while(trail.length > snake.tail){
 		trail.shift();
 	}
-	if(snake.ate(food)){
-		setTimeout(setScore,0);
-	} else if(snake.ate(specialFood)){
-		setTimeout(setScore,0);
-		setTimeout(setScore,0);
-	} else {
-		snake.ate(rotenFood);
+	for(let food of foods){
+		if(snake.ate(food)){
+			for(let i=0; i < food.points;i++) setTimeout(setScore,0);
+		}
+		food.draw();
 	}
-	
-	rotenFood.draw();
-	food.draw();
-	specialFood.draw();
+	if(snake.tail < 5) snake.tail = 5;
 }
 
 function setScore(){
