@@ -50,6 +50,7 @@
 	document.getElementById("rankingList").innerHTML=html;
   }
   function saveRanking(){
+	if(mGameScore.userName == "bot") return;
 	let score = mGameScore.score;
 	setTimeout(()=>{	
 		if(!mGameScore.userName) setUserName(prompt("Coloca o teu nome aí:"));
@@ -119,7 +120,7 @@ boardSize=20;// no board de 400px cabem 20 quadrados de 20 pixels
 
 directionX=1;
 directionY=0;
-trail=[];
+let foods = [];
 
 mGameScore={
 	userName:'',
@@ -130,59 +131,99 @@ function saveUserName(){
 	mGameScore.userName = document.getElementById("userName").value;
 	localStorage.setItem("userName", mGameScore.userName);
 }
-class Food {
-	x = 0; 
-	y = 0; 
-	color = "red";
-	points = 1;
-	grow = 1;
-	birth = Date.now();
+class Snake {
+	
 	constructor(){
 		this.respaw();
 	}
 	
 	respaw = ()=>{
-		this.birth = Date.now();
-		this.x=Math.floor(Math.random()*boardSize);
-		this.y=Math.floor(Math.random()*boardSize);
-		for(var i=0;i<trail.length;i++){
-			if(trail[i].x == this.x && trail[i].y == this.y) return this.respaw();
+		this.x = 10;
+		this.y = 10;
+		this.tail = 5;
+		this.trail=[];
+		this.direction = {x:1,y:0};
+		this.isDead = false;
+	};
+	
+	ate = (food)=> {
+		if(food.isVisible() && food.x == this.x && food.y == this.y){
+			this.tail += food.grow;
+			food.respaw();
+			return true;
+		}
+		return false;
+	};
+	move = ()=> { 
+		if(this.direction.y != directionY && this.direction.x != directionX){
+			this.direction.x= directionX;
+			this.direction.y= directionY;
+		}
+		this.x+= this.direction.x;
+		this.y+= this.direction.y;
+		
+		if(overflowLeft()) this.x = boardSize-1; 
+		else if(overflowRight()) this.x = 0; 
+		else if(overflowTop()) this.y = boardSize-1; 
+		else if(overflowBottom()) this.y = 0; 
+	};
+	draw = ()=> {
+		for(var i=0;i<this.trail.length;i++){
+			drawSquare(this.trail[i], "lime");
+			if(isCrashed(this.trail[i], this)){
+				this.tail = 5;	
+				this.isDead = true;
+			}
+		}
+		this.trail.push({x:this.x,y:this.y});
+		while(this.trail.length > this.tail){
+			this.trail.shift();
 		}
 	};
-	draw = ()=>{
-		if(this.isVisible()){
-			ctx.fillStyle = this.color;
-			ctx.fillRect(this.x*squareSize,this.y*squareSize,squareSize-2,squareSize-2);
-		}
-	};
-	isVisible = ()=> true;
-};
-class SpecialFood extends Food {
+}
+var snake= new Snake();
+
+class Food {
+	x = 0; 
+	y = 0; 
+	birth = 0;
 	
 	constructor(color, points, grow, respawTime, aliveTime){
-		super();
+		this.respaw();
 		this.color = color;
 		this.points = points;
 		this.grow = grow;
 		this.showTimeStart = respawTime;
 		this.showTimeEnd = respawTime + aliveTime;
 	}
-	
+	respaw = ()=>{
+		this.birth = Date.now();
+		this.x = Math.floor(Math.random()*boardSize);
+		this.y = Math.floor(Math.random()*boardSize);
+		for(var i=0;i< snake.trail.length;i++){
+			if(isCrashed(snake.trail[i], this)) return this.respaw();
+		}
+	};
+	draw = ()=>{
+		if(this.isVisible()){
+			drawSquare(this, this.color);
+		}
+	};
 	isVisible = ()=>{
 		let age = Date.now() - this.birth;
-		if(age > this.showTimeEnd) {
+		if(this.showTimeEnd > 0 && age > this.showTimeEnd) {
 			return this.respaw();
 		}
 		return age > this.showTimeStart;
 	};
-}
+};
 
-let food = new Food();
-let specialFood = new SpecialFood("blue", 2, 2, (1000 * 40), (1000 * 15));
-let rotenFood = new SpecialFood("gray", 0, 3, (1000 * 20), (1000 * 20));
-let rotenFood2 = new SpecialFood("gray", 0, 3, (1000 * 20), (1000 * 20));
-let goodFood = new SpecialFood("yellow", 0, -1, (1000 * 60), (1000 * 10));
-let foods = [food, specialFood, rotenFood, rotenFood2, goodFood];
+const ONE_SECOND = 1000;
+
+foods.push(new Food("red", 1, 1, -1, -1));
+foods.push(new Food("blue", 2, 2, (ONE_SECOND * 40), (ONE_SECOND * 15)));
+foods.push(new Food("gray", 0, 3, (ONE_SECOND * 20), (ONE_SECOND * 20)));
+foods.push(new Food("yellow", 0, -1, (ONE_SECOND * 60), (ONE_SECOND * 10)));
 
 window.onload = function(){
 	document.getElementById("userName").value = mGameScore.userName = localStorage.getItem("userName") || '';
@@ -196,53 +237,20 @@ window.onload = function(){
 	setInterval(game,1000/15);
 	//game();game();
 }
-var snake={
-	x:10,
-	y:10,
-	tail: 5,
-	direction:{x:1,y:0},
-	ate: (food)=> {
-		if(food.isVisible() && food.x == snake.x && food.y == snake.y){
-			snake.tail += food.grow;
-			food.respaw();
-			return true;
-		}
-		return false;
-	},
-	move: ()=> { 
-		if(snake.direction.y != directionY && snake.direction.x != directionX){
-			snake.direction.x= directionX;
-			snake.direction.y= directionY;
-		}
-		snake.x+= snake.direction.x;
-		snake.y+= snake.direction.y;
-	}
-};
 
 
 function game(){
+	autoMove();
 	snake.move();
 	
-	if(overflowLeft()){ snake.x= boardSize-1; } 
-	if(overflowRight()){ snake.x= 0; } 
-	if(overflowTop()){ snake.y= boardSize-1; } 
-	if(overflowBottom()){ snake.y= 0; } 
-	
 	drawBoard();
+	snake.draw();
+	if(snake.isDead){		
+		saveRanking();
+		score.innerHTML=mGameScore.score=0;
+		snake.respaw();
+	}
 	
-	ctx.fillStyle = "lime";
-	for(var i=0;i<trail.length;i++){
-		ctx.fillRect(trail[i].x*squareSize,trail[i].y*squareSize,squareSize-2,squareSize-2);
-		if(trail[i].x == snake.x && trail[i].y == snake.y){
-			snake.tail = 5;	
-			saveRanking();
-			score.innerHTML=mGameScore.score=0;
-		}
-	}
-	trail.push({x:snake.x,y:snake.y});
-	while(trail.length > snake.tail){
-		trail.shift();
-	}
 	for(let food of foods){
 		if(snake.ate(food)){
 			for(let i=0; i < food.points;i++) setTimeout(setScore,0);
@@ -270,7 +278,11 @@ function drawBoard(){
 	ctx.fillRect(0,0,canv.width,canv.height);
 }
 
-function isCrash(){  };
+function isCrashed(a, b){ return a.x == b.x && a.y == b.y;}
+function drawSquare(position, color) { 
+	ctx.fillStyle = color;
+	ctx.fillRect(position.x * squareSize, position.y * squareSize, squareSize-2, squareSize-2); 
+}
 
 function keyPush(event){
 	switch(event.keyCode){
@@ -294,6 +306,23 @@ function turnRight(){
 function turnDown(){
 	directionX=0; directionY=1;
 }
+
+function autoMove(){
+	if(mGameScore.userName != "bot") return;
+	if(isMovingLeft() && isOnLeft()) return turnUp();
+	if(isMovingUp() && isOnLeft()) return turnRight();
+	if(isMovingRight() && isOnRight()) return turnUp();
+	if(isMovingUp() && isOnRight()) return turnLeft();
+}
+function isMovingLeft(){return directionX==-1 && directionY==0;}
+function isMovingUp(){return directionX==0 && directionY==-1;}
+function isMovingRight(){return directionX==1 && directionY==0;}
+function isMovingDown(){ return directionX==0 && directionY==1;}
+function isOnLeft(){ return snake.x==0; }
+function isOnTop(){ return snake.y==0; }
+function isOnRight(){ return snake.x==boardSize-1; }
+function isOnBottom(){ return snake.y==boardSize-1; }
+
 
 function keyPush2(event){
 	switch(event.keyCode){
