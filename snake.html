@@ -147,7 +147,7 @@ class Snake {
 	};
 	
 	ate = (food)=> {
-		if(food.isVisible() && food.x == this.x && food.y == this.y){
+		if(food.isVisible() && isCrashed(food, this)){
 			this.tail += food.grow;
 			food.respaw();
 			return true;
@@ -180,6 +180,12 @@ class Snake {
 			this.trail.shift();
 		}
 	};
+	crashes = (object)=>{
+		for(var i=0;i<this.trail.length;i++){
+			if(isCrashed(this.trail[i], object)) return true;
+		}
+		return false;
+	};
 }
 var snake= new Snake();
 
@@ -200,14 +206,13 @@ class Food {
 		this.birth = Date.now();
 		this.x = Math.floor(Math.random()*boardSize);
 		this.y = Math.floor(Math.random()*boardSize);
-		for(var i=0;i< snake.trail.length;i++){
-			if(isCrashed(snake.trail[i], this)) return this.respaw();
-		}
+		if(snake.crashes(this)) return this.respaw();
 	};
 	draw = ()=>{
-		if(this.isVisible()){
-			drawSquare(this, this.color);
-		}
+		if(this.isVisible() && !snake.crashes(this)){
+			return typeof this.color == "string" ? drawSquare(this, this.color) : drawImage(this, this.color);
+		} 
+		if(this.isVisible()) return this.respaw();
 	};
 	isVisible = ()=>{
 		let age = Date.now() - this.birth;
@@ -221,9 +226,15 @@ class Food {
 const ONE_SECOND = 1000;
 
 foods.push(new Food("red", 1, 1, -1, -1));
-foods.push(new Food("blue", 2, 2, (ONE_SECOND * 40), (ONE_SECOND * 15)));
-foods.push(new Food("gray", 0, 3, (ONE_SECOND * 20), (ONE_SECOND * 20)));
-foods.push(new Food("yellow", 0, -1, (ONE_SECOND * 60), (ONE_SECOND * 10)));
+foods.push(new Food("blue", 2, 2, (ONE_SECOND * 30), (ONE_SECOND * 15)));
+
+let mAngry = new Image();
+mAngry.src = "angry.gif";
+foods.push(new Food(mAngry, 0, 3, (ONE_SECOND * 15), (ONE_SECOND * 25)));
+
+let mSmiley = new Image();
+mSmiley.src = "smiley.gif";
+foods.push(new Food(mSmiley, 0, -1, (ONE_SECOND * 45), (ONE_SECOND * 10)));
 
 window.onload = function(){
 	document.getElementById("userName").value = mGameScore.userName = localStorage.getItem("userName") || '';
@@ -282,6 +293,9 @@ function isCrashed(a, b){ return a.x == b.x && a.y == b.y;}
 function drawSquare(position, color) { 
 	ctx.fillStyle = color;
 	ctx.fillRect(position.x * squareSize, position.y * squareSize, squareSize-2, squareSize-2); 
+}
+function drawImage(position, img) {
+	ctx.drawImage(img, position.x * squareSize, position.y * squareSize, squareSize, squareSize);
 }
 
 function keyPush(event){
